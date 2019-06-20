@@ -19,6 +19,7 @@ export default class HomeScreen extends Component {
     };
 
     handleLearnMorePress() {
+        console.log('handleLearnMorePress');
         WebBrowser.openBrowserAsync(
             'https://docs.expo.io/versions/latest/workflow/development-mode/'
         );
@@ -109,7 +110,7 @@ export default class HomeScreen extends Component {
 function DevelopmentModeNotice() {
     if (__DEV__) {
         const learnMoreButton = (
-            <Text onPress={this.handleLearnMorePress} style={styles.helpLinkText}>
+            <Text onPress={HomeScreen.prototype.handleLearnMorePress} style={styles.helpLinkText}>
                 Learn more
             </Text>
         );
