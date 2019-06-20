@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {AppStyles} from '../constants/Colors';
 
@@ -39,15 +39,16 @@ export default class WelcomeScreen extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.title}>Say hello to your new app</Text>
-                <Button
-                    title="Log In"
-                    onPress={() => this.props.navigation.navigate("Login")}
-                />
-                <Button
-                    title="Sign Up"
-                    onPress={() => this.props.navigation.navigate("Signup")}
-                />
-
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Login")}>
+                        <Text style={styles.button}>Log in!</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Signup")}>
+                        <Text style={styles.button}>Sign Up!</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     }
@@ -98,5 +99,20 @@ const styles = StyleSheet.create({
     },
     spinner: {
         marginTop: 200
+    },
+    buttonContainer: {
+        marginTop: 30,
+    },
+    button: {
+        backgroundColor: AppStyles.color.tint,
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 8,
+        color: 'white',
+        fontSize: 24,
+        fontWeight: 'bold',
+        overflow: 'hidden',
+        padding: 12,
+        textAlign: 'center',
     }
 });
