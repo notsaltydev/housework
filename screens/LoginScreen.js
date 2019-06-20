@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {AsyncStorage, Button, View} from 'react-native';
 
-export default class SignInScreen extends Component {
+export default class LoginScreen extends Component {
     static navigationOptions = {
-        title: 'Please sign in',
+        title: 'LoginScreen',
     };
 
     _signInAsync = async () => {
