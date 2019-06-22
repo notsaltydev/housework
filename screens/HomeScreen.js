@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import {AsyncStorage, Button, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {AsyncStorage, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {Ionicons} from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import HeaderRight from '../components/HeaderRight';
+import HorizontalScrollTask from '../components/HorizontalScrollTask';
+import GroupCard from '../components/GroupCard';
 
 export default class HomeScreen extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -27,6 +29,39 @@ export default class HomeScreen extends Component {
         }
     });
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            taskList: [
+                {
+                    id: 1234,
+                    name: 'Beer',
+                    image:
+                        'https://cdn.britannica.com/700x450/72/186972-049-26ACDCBE.jpg',
+                    icon: '',
+                },
+                {
+                    id: 2345,
+                    name: 'Arcade',
+                    image: 'http://www.thebasementarcade.com/gameroom/0516/1.jpg',
+                    icon: '',
+                },
+                {
+                    id: 3456,
+                    name: 'Nature',
+                    image:
+                        'https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&h=350',
+                    icon: '',
+                },
+                {id: 4567, image: '', icon: ''},
+                {id: 6789, image: '', icon: ''},
+                {id: 7890, image: '', icon: ''},
+                {id: 8909, image: '', icon: ''},
+            ],
+        }
+    }
+
     _signOutAsync = async () => {
         await AsyncStorage.clear();
         this.props.navigation.navigate('Auth');
@@ -36,20 +71,46 @@ export default class HomeScreen extends Component {
         return (
             <View style={styles.container}>
                 <View style={[styles.container, styles.title, styles.userBoard]}>
-                    <Text style={styles.textTitle}>Hello, Maggie</Text>
-                    <View style={styles.taskBarContainer}>
+                    <Text style={[styles.textTitle, styles.containerOffset]}>Hello, Maggie</Text>
+                    <View style={[styles.taskBarContainer, styles.containerOffset]}>
                         <Text style={styles.taskBarLabel}>Your Tasks</Text>
 
                         <TouchableOpacity>
                             <Text style={styles.taskBarLink}>View all</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
-                <ScrollView style={[styles.container]}>
-                    <View>
-                        <Button title="Actually, sign me out :)" onPress={this._signOutAsync}/>
+                    <View style={styles.horizontalScrollTaskContainer}>
+                        <HorizontalScrollTask
+                            data={this.state.taskList}
+                            renderItem={({item}) => (
+                                <View style={{marginRight: 6}}>
+                                    <GroupCard item={item}/>
+                                </View>
+                            )}
+                            keyExtractor={(item) => `item-${item.id}`}
+                        />
                     </View>
-                </ScrollView>
+                </View>
+                <View style={[styles.container]}>
+                    <View style={[styles.taskBarContainer, styles.containerOffset, styles.otherTaskBarContainer]}>
+                        <Text style={[styles.taskBarLabel, styles.otherTaskBarLabel]}>Task in your group</Text>
+
+                        <TouchableOpacity>
+                            <Text style={styles.otherTaskBarLink}>View all</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.horizontalScrollTaskContainer}>
+                        <HorizontalScrollTask
+                            data={this.state.taskList}
+                            renderItem={({item}) => (
+                                <View style={{marginRight: 6}}>
+                                    <GroupCard item={item}/>
+                                </View>
+                            )}
+                            keyExtractor={(item) => `item-${item.id}`}
+                        />
+                    </View>
+                </View>
             </View>
         );
     }
@@ -57,9 +118,7 @@ export default class HomeScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    title: {
-
-    },
+    title: {},
     textTitle: {
         color: '#F0D4CC',
         fontSize: 32,
@@ -68,106 +127,41 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     userBoard: {
-        paddingLeft: 26,
-        paddingRight: 26,
         backgroundColor: '#28165B'
     },
     taskBarContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        paddingBottom: 20
     },
     taskBarLabel: {
         color: '#F0D4CC',
         textTransform: 'uppercase',
         fontWeight: 'bold'
     },
+    otherTaskBarContainer: {
+        paddingTop: 33,
+        paddingBottom: 20
+    },
+    otherTaskBarLabel: {
+        color: '#28165B',
+    },
     taskBarLink: {
         color: '#FFFFFF',
+    },
+    otherTaskBarLink: {
+        color: '#1E1B1B',
     },
     container: {
         flex: 1,
         backgroundColor: '#fff',
     },
-    // developmentModeText: {
-    //     marginBottom: 20,
-    //     color: 'rgba(0,0,0,0.4)',
-    //     fontSize: 14,
-    //     lineHeight: 19,
-    //     textAlign: 'center',
-    // },
-    // contentContainer: {
-    //     paddingTop: 30,
-    // },
-    // welcomeContainer: {
-    //     alignItems: 'center',
-    //     marginTop: 10,
-    //     marginBottom: 20,
-    // },
-    // welcomeImage: {
-    //     width: 100,
-    //     height: 80,
-    //     resizeMode: 'contain',
-    //     marginTop: 3,
-    //     marginLeft: -10,
-    // },
-    // getStartedContainer: {
-    //     alignItems: 'center',
-    //     marginHorizontal: 50,
-    // },
-    // homeScreenFilename: {
-    //     marginVertical: 7,
-    // },
-    // codeHighlightText: {
-    //     color: 'rgba(96,100,109, 0.8)',
-    // },
-    // codeHighlightContainer: {
-    //     backgroundColor: 'rgba(0,0,0,0.05)',
-    //     borderRadius: 3,
-    //     paddingHorizontal: 4,
-    // },
-    // getStartedText: {
-    //     fontSize: 17,
-    //     color: 'rgba(96,100,109, 1)',
-    //     lineHeight: 24,
-    //     textAlign: 'center',
-    // },
-    // tabBarInfoContainer: {
-    //     position: 'absolute',
-    //     bottom: 0,
-    //     left: 0,
-    //     right: 0,
-    //     ...Platform.select({
-    //         ios: {
-    //             shadowColor: 'black',
-    //             shadowOffset: {width: 0, height: -3},
-    //             shadowOpacity: 0.1,
-    //             shadowRadius: 3,
-    //         },
-    //         android: {
-    //             elevation: 20,
-    //         },
-    //     }),
-    //     alignItems: 'center',
-    //     backgroundColor: '#fbfbfb',
-    //     paddingVertical: 20,
-    // },
-    // tabBarInfoText: {
-    //     fontSize: 17,
-    //     color: 'rgba(96,100,109, 1)',
-    //     textAlign: 'center',
-    // },
-    // navigationFilename: {
-    //     marginTop: 5,
-    // },
-    // helpContainer: {
-    //     marginTop: 15,
-    //     alignItems: 'center',
-    // },
-    // helpLink: {
-    //     paddingVertical: 15,
-    // },
-    // helpLinkText: {
-    //     fontSize: 14,
-    //     color: '#2e78b7',
-    // }
+    containerOffset: {
+        paddingLeft: 26,
+        paddingRight: 26
+    },
+    horizontalScrollTaskContainer: {
+        // paddingLeft: 26,
+        marginBottom: 40
+    }
 });
