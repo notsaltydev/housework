@@ -26,6 +26,12 @@ export default function App(props) {
             </View>
         );
     }
+
+    changeScreenOrientation();
+}
+
+async function changeScreenOrientation() {
+    await ScreenOrientation.allowAsync(ScreenOrientation.Orientation.LANDSCAPE);
 }
 
 async function loadResourcesAsync() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform} from 'react-native';
+import {Platform, View} from 'react-native';
 import {createBottomTabNavigator, createStackNavigator,} from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
@@ -12,14 +12,12 @@ const HomeStack = createStackNavigator({
 });
 
 HomeStack.navigationOptions = {
-    tabBarLabel: 'Home',
+    tabBarLabel: <View/>,
     tabBarIcon: ({focused}) => (
         <TabBarIcon
             focused={focused}
             name={
-                Platform.OS === 'ios'
-                    ? `ios-information-circle${focused ? '' : '-outline'}`
-                    : 'md-information-circle'
+                Platform.OS === 'ios' ? 'ios-home' : 'md-home'
             }
         />
     ),
@@ -30,11 +28,11 @@ const LinksStack = createStackNavigator({
 });
 
 LinksStack.navigationOptions = {
-    tabBarLabel: 'Links',
+    tabBarLabel: <View/>,
     tabBarIcon: ({focused}) => (
         <TabBarIcon
             focused={focused}
-            name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+            name={Platform.OS === 'ios' ? 'ios-list' : 'md-list'}
         />
     ),
 };
@@ -44,17 +42,25 @@ const SettingsStack = createStackNavigator({
 });
 
 SettingsStack.navigationOptions = {
-    tabBarLabel: 'Settings',
+    tabBarLabel: <View/>,
     tabBarIcon: ({focused}) => (
         <TabBarIcon
             focused={focused}
-            name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+            name={Platform.OS === 'ios' ? 'ios-timer' : 'md-timer'}
         />
     ),
 };
 
 export default createBottomTabNavigator({
-    HomeStack,
-    LinksStack,
-    SettingsStack,
-});
+        HomeStack,
+        LinksStack,
+        SettingsStack,
+    },
+    {
+        tabBarOptions: {
+            style: {
+                height: 65
+            }
+        }
+    }
+);

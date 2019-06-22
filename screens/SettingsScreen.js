@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ExpoConfigView} from '@expo/samples';
+import {View} from 'react-native';
 
 export default class SettingsScreen extends Component {
     static navigationOptions = {
@@ -11,6 +11,6 @@ export default class SettingsScreen extends Component {
      * we just wanted to give you a quick view of your config.
      */
     render() {
-        return <ExpoConfigView/>;
+        return <View/>;
     }
 }
