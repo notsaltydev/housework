@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {Ionicons} from '@expo/vector-icons';
 import Colors from '../constants/Colors';
@@ -61,11 +61,6 @@ export default class HomeScreen extends Component {
             ],
         }
     }
-
-    _signOutAsync = async () => {
-        await AsyncStorage.clear();
-        this.props.navigation.navigate('Auth');
-    };
 
     render() {
         return (

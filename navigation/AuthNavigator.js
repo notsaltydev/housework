@@ -5,17 +5,13 @@ import {StyleSheet} from 'react-native';
 import {AppStyles} from "../constants/Colors";
 
 import LoginScreen from '../screens/LoginScreen';
-import SignupScreen from '../screens/SignupScreen';
-import WelcomeScreen from '../screens/WelcomeScreen';
 
 export default createStackNavigator(
     {
-        Login: {screen: LoginScreen},
-        Signup: {screen: SignupScreen},
-        Welcome: {screen: WelcomeScreen}
+        Login: {screen: LoginScreen}
     },
     {
-        initialRouteName: "Welcome",
+        initialRouteName: "Login",
         headerMode: "float",
         navigationOptions: ({navigation}) => ({
             headerTintColor: "red",
