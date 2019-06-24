@@ -6,10 +6,10 @@ import {Button, Input} from 'react-native-elements';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const TabSelector = ({selected}) => {
+const TabSelector = ({selected, isLoading}) => {
     return (
         <View style={styles.selectorContainer}>
-            <View style={selected && styles.selected}/>
+            <View style={[selected && styles.selected, isLoading && styles.loading]}/>
         </View>
     );
 };
@@ -167,8 +167,8 @@ export default class LoginScreen extends Component {
                                 />
                             </View>
                             <View style={styles.rowSelector}>
-                                <TabSelector selected={isLoginPage}/>
-                                <TabSelector selected={isSignUpPage}/>
+                                <TabSelector selected={isLoginPage} isLoading={isLoading}/>
+                                <TabSelector selected={isSignUpPage} isLoading={isLoading}/>
                             </View>
                             <View style={styles.formContainer}>
                                 <Input
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     },
     categoryText: {
         textAlign: 'center',
-        color: 'black',
+        color: '#28165B',
         fontSize: 24,
         backgroundColor: 'transparent',
         opacity: 0.54,
@@ -340,8 +340,12 @@ const styles = StyleSheet.create({
         top: 0,
         borderRightWidth: 70,
         borderBottomWidth: 70,
-        borderColor: 'black',
+        borderColor: '#28165B',
         backgroundColor: 'orange',
+    },
+    loading: {
+        borderColor: '#000000',
+        opacity: 0.5
     },
     helpContainer: {
         height: 64,
