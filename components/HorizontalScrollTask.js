@@ -25,7 +25,10 @@ export default class HorizontalScrollTask extends Component {
 
 const styles = StyleSheet.create({
     innerScroll: {
-        padding: 15,
+        paddingTop: 10,
+        paddingRight: 16,
+        paddingLeft: 16,
+        paddingBottom: 10,
         flexDirection: 'row',
     },
 });

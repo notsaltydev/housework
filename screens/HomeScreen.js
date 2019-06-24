@@ -74,7 +74,7 @@ export default class HomeScreen extends Component {
                             <Text style={styles.taskBarLink}>View all</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.horizontalScrollTaskContainer}>
+                    <View>
                         <HorizontalScrollTask
                             data={this.state.taskList}
                             renderItem={({item}) => (
@@ -94,7 +94,7 @@ export default class HomeScreen extends Component {
                             <Text style={styles.otherTaskBarLink}>View all</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.horizontalScrollTaskContainer}>
+                    <View>
                         <HorizontalScrollTask
                             data={this.state.taskList}
                             renderItem={({item}) => (
@@ -122,12 +122,12 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     userBoard: {
-        backgroundColor: '#28165B'
+        backgroundColor: '#28165B',
+        flex: 1.1,
     },
     taskBarContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingBottom: 20
     },
     taskBarLabel: {
         color: '#F0D4CC',
@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
     },
     otherTaskBarContainer: {
         paddingTop: 33,
-        paddingBottom: 20
     },
     otherTaskBarLabel: {
         color: '#28165B',
@@ -154,9 +153,5 @@ const styles = StyleSheet.create({
     containerOffset: {
         paddingLeft: 26,
         paddingRight: 26
-    },
-    horizontalScrollTaskContainer: {
-        // paddingLeft: 26,
-        marginBottom: 40
     }
 });
