@@ -91,9 +91,15 @@ export default class LoginScreen extends Component {
             this.setState({isLoading: true});
 
             axios.post(
-                'https://housework-management.herokuapp.com/api/auth', {
+                'https://housework-management.herokuapp.com/api/auth',
+                {
                     email: email,
                     password: password
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 })
                 .then((response) => {
                     this.setState({isLoading: false});
