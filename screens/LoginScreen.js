@@ -1,6 +1,16 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {AsyncStorage, Dimensions, KeyboardAvoidingView, LayoutAnimation, StyleSheet, Text, View} from 'react-native';
+import axios from 'axios';
+import {
+    Alert,
+    AsyncStorage,
+    Dimensions,
+    KeyboardAvoidingView,
+    LayoutAnimation,
+    StyleSheet,
+    Text,
+    View
+} from 'react-native';
 
 import {Button, Input} from 'react-native-elements';
 
@@ -63,31 +73,40 @@ export default class LoginScreen extends Component {
         return re.test(email);
     }
 
-    navigateToMainScreen = async () => {
-        await AsyncStorage.setItem('userToken', 'abc');
+    navigateToMainScreen = () => {
         this.props.navigation.navigate('Main');
     };
 
     login() {
-        const {email, password} = this.state;
-        this.setState({isLoading: true});
+        const {email, password, isEmailValid, isPasswordValid} = this.state;
 
-        // Simulate an API call
-        const fakeApiCall = new Promise((resolve) => {
-            setTimeout(() => {
-                LayoutAnimation.easeInEaseOut();
-                this.setState({
-                    isLoading: false,
-                    isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
-                    isPasswordValid: password.length >= 8 || this.passwordInput.shake(),
-                });
+        LayoutAnimation.easeInEaseOut();
 
-                resolve()
-            }, 1500);
-
-        }).then(() => {
-            this.navigateToMainScreen();
+        this.setState({
+            isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
+            isPasswordValid: password.length >= 8 || this.passwordInput.shake(),
         });
+
+        if (this.validateEmail(email) && password.length >= 8) {
+            this.setState({isLoading: true});
+
+            axios.post(
+                'https://housework-management.herokuapp.com/api/auth', {
+                    email: email,
+                    password: password
+                })
+                .then((response) => {
+                    this.setState({isLoading: false});
+
+                    return AsyncStorage.setItem('userToken', response.data.token);
+                })
+                .then(() => this.navigateToMainScreen())
+                .catch((error) => {
+                    this.setState({isLoading: false});
+                    console.log('error', error);
+                    Alert.alert(`Error: ${error.code || ''} 🔥`, error.message || error);
+                });
+        }
     }
 
     signUp() {
