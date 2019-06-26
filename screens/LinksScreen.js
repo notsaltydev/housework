@@ -1,8 +1,74 @@
 import React, {Component} from 'react';
-import {AsyncStorage, Button, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import HeaderRight from "../components/HeaderRight";
+
+const TASKS = [
+    {
+        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        badge: 'high',
+        name: 'Cleaning up the bedroom',
+        label: {
+            name: 'cleaning',
+            color: 'primary'
+        }
+    },
+    {
+        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        badge: 'high',
+        name: 'Take out the thrash',
+        label: {
+            name: 'cleaning',
+            color: 'primary'
+        }
+    },
+    {
+        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        badge: 'high',
+        name: 'Do the shopping list for the next week',
+        label: {
+            name: 'cleaning',
+            color: 'primary'
+        }
+    },
+    {
+        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        badge: 'high',
+        name: 'Do the ironing',
+        label: {
+            name: 'cleaning',
+            color: 'primary'
+        }
+    },
+    {
+        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        badge: 'high',
+        name: 'Clean all the windows',
+        label: {
+            name: 'cleaning',
+            color: 'primary'
+        }
+    },
+    {
+        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        badge: 'high',
+        name: 'Plan holidays',
+        label: {
+            name: 'cleaning',
+            color: 'primary'
+        }
+    },
+    {
+        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        badge: 'high',
+        name: 'Learn english',
+        label: {
+            name: 'cleaning',
+            color: 'primary'
+        }
+    },
+];
 
 export default class LinksScreen extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -25,33 +91,57 @@ export default class LinksScreen extends Component {
         }
     });
 
-    _signOutAsync = async () => {
-        await AsyncStorage.clear();
-        this.props.navigation.navigate('Auth');
-    };
+    renderListCards() {
+        return TASKS.map((task, index) => {
+            return this.renderCard(task, index);
+        });
+    }
+
+    renderCard(task, index) {
+        return (
+            <View
+                key={index}
+                style={{
+                    height: 60,
+                    marginHorizontal: 10,
+                    marginTop: 24,
+                    backgroundColor: '#ececec',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    marginRight: 26,
+                    marginLeft: 26,
+                }}
+            >
+            </View>
+        );
+    }
 
     render() {
         return (
             <View style={styles.container}>
-                <View style={[styles.title]}>
-                    <Text style={[styles.textTitle, styles.containerOffset]}>Pending tasks</Text>
-                    <View style={[styles.taskBarContainer, styles.containerOffset]}>
-                        <Text style={styles.taskBarLabel}>To be confirmed</Text>
-                        <Text style={styles.taskBarLabel}>Confirmed</Text>
+                <SafeAreaView
+                    style={[styles.container, styles.area]}
+                >
+                    <View style={[styles.title]}>
+                        <Text style={[styles.textTitle, styles.containerOffset]}>Pending tasks</Text>
+                        <View style={[styles.taskBarContainer, styles.containerOffset]}>
+                            <Text style={styles.taskBarLabel}>To be confirmed</Text>
+                            <Text style={styles.taskBarLabel}>Confirmed</Text>
+                        </View>
                     </View>
-                </View>
-                <ScrollView style={styles.container}>
-                    <View>
-                        <Button title="Actually, sign me out :)" onPress={this._signOutAsync}/>
-                    </View>
-                </ScrollView>
-            </View>
+                    <ScrollView style={{flex: 1}}>
+                        {this.renderListCards()}
+                    </ScrollView>
+                </SafeAreaView>
 
+            </View>
         );
     }
-
 }
 const styles = StyleSheet.create({
+    area: {
+        // backgroundColor: 'yellow'
+    },
     container: {
         flex: 1,
         backgroundColor: '#fff',

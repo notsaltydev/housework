@@ -40,9 +40,9 @@ export default class SettingsScreen extends Component {
                         <Text style={styles.taskBarLabel}>Confirmed</Text>
                     </View>
                 </View>
-                <ScrollView style={styles.container}>
+                <ScrollView contentContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     <View>
-                        <Button title="Actually, sign me out :)" onPress={this._signOutAsync}/>
+                        <Button title="Logout" onPress={this._signOutAsync}/>
                     </View>
                 </ScrollView>
             </View>
