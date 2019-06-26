@@ -46,9 +46,11 @@ export default class LoginScreen extends Component {
         this.state = {
             email: '',
             password: '',
+            username: '',
             selectedCategory: 0,
             isLoading: false,
             isEmailValid: true,
+            isUsernameValid: true,
             isPasswordValid: true,
             isConfirmationValid: true,
             componentLoaded: false
@@ -116,26 +118,58 @@ export default class LoginScreen extends Component {
     }
 
     signUp() {
-        const {email, password, passwordConfirmation} = this.state;
-        this.setState({isLoading: true});
+        const {email, password, passwordConfirmation, username} = this.state;
 
-        // Simulate an API call
-        const fakeApiCall = new Promise((resolve) => {
-            setTimeout(() => {
-                LayoutAnimation.easeInEaseOut();
-                this.setState({
-                    isLoading: false,
-                    isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
-                    isPasswordValid: password.length >= 8 || this.passwordInput.shake(),
-                    isConfirmationValid:
-                        password === passwordConfirmation || this.confirmationInput.shake(),
-                });
+        LayoutAnimation.easeInEaseOut();
 
-                resolve();
-            }, 1500);
-        }).then(() => {
-            this.navigateToMainScreen();
+        this.setState({
+            isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
+            isPasswordValid: password.length >= 8 || this.passwordInput.shake(),
+            isUsernameValid: username.length >= 5 || this.usernameInput.shake(),
+            isConfirmationValid:
+                password === passwordConfirmation || this.confirmationInput.shake(),
         });
+
+        if (this.validateEmail(email) && password.length >= 8 && username.length >= 5) {
+            this.setState({isLoading: true});
+
+            axios.post(
+                'https://housework-management.herokuapp.com/api/user',
+                {
+                    name: username,
+                    email: email,
+                    password: password
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(() =>
+                    axios.post(
+                        'https://housework-management.herokuapp.com/api/auth',
+                        {
+                            email: email,
+                            password: password
+                        },
+                        {
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                )
+                .then((response) => {
+                    this.setState({isLoading: false});
+                    console.log('response.data.token', response.data.token);
+                    return AsyncStorage.setItem('userToken', response.data.token);
+                })
+                .then(() => this.navigateToMainScreen())
+                .catch((error) => {
+                    this.setState({isLoading: false});
+                    console.log('error', error);
+                    Alert.alert(`Error: ${error.code || ''} 🔥`, error.message || error);
+                });
+        }
     }
 
     render() {
@@ -145,9 +179,11 @@ export default class LoginScreen extends Component {
             isEmailValid,
             isPasswordValid,
             isConfirmationValid,
+            isUsernameValid,
             email,
             password,
             passwordConfirmation,
+            username,
         } = this.state;
         const isLoginPage = selectedCategory === 0;
         const isSignUpPage = selectedCategory === 1;
@@ -196,6 +232,29 @@ export default class LoginScreen extends Component {
                                 <TabSelector selected={isSignUpPage} isLoading={isLoading}/>
                             </View>
                             <View style={styles.formContainer}>
+                                {isSignUpPage && (
+                                    <Input
+                                        value={username}
+                                        keyboardAppearance="light"
+                                        autoFocus={false}
+                                        autoCapitalize="none"
+                                        autoCorrect={false}
+                                        keyboardType="default"
+                                        returnKeyType="next"
+                                        inputStyle={{marginLeft: 10}}
+                                        placeholder={'Name'}
+                                        containerStyle={{
+                                            borderBottomColor: 'rgba(0, 0, 0, 0.38)',
+
+                                        }}
+                                        ref={input => (this.usernameInput = input)}
+                                        onSubmitEditing={() => this.emailInput.focus()}
+                                        onChangeText={username => this.setState({username})}
+                                        errorMessage={
+                                            isUsernameValid ? null : 'Please enter at least 5 characters'
+                                        }
+                                    />
+                                )}
                                 <Input
                                     value={email}
                                     keyboardAppearance="light"
@@ -207,6 +266,7 @@ export default class LoginScreen extends Component {
                                     inputStyle={{marginLeft: 10}}
                                     placeholder={'Email'}
                                     containerStyle={{
+                                        marginTop: 16,
                                         borderBottomColor: 'rgba(0, 0, 0, 0.38)',
                                     }}
                                     ref={input => (this.emailInput = input)}
