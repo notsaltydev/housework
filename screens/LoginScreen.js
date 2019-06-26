@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import {
     Alert,
     AsyncStorage,
@@ -13,6 +12,9 @@ import {
 } from 'react-native';
 
 import {Button, Input} from 'react-native-elements';
+
+import {LoginService} from '../services/LoginService';
+import {SignupService} from '../services/SignupService';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -92,17 +94,7 @@ export default class LoginScreen extends Component {
         if (this.validateEmail(email) && password.length >= 8) {
             this.setState({isLoading: true});
 
-            axios.post(
-                'https://housework-management.herokuapp.com/api/auth',
-                {
-                    email: email,
-                    password: password
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
+            LoginService(email, password)
                 .then((response) => {
                     this.setState({isLoading: false});
 
@@ -133,36 +125,9 @@ export default class LoginScreen extends Component {
         if (this.validateEmail(email) && password.length >= 8 && username.length >= 5) {
             this.setState({isLoading: true});
 
-            axios.post(
-                'https://housework-management.herokuapp.com/api/user',
-                {
-                    name: username,
-                    email: email,
-                    password: password
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(() =>
-                    axios.post(
-                        'https://housework-management.herokuapp.com/api/auth',
-                        {
-                            email: email,
-                            password: password
-                        },
-                        {
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                )
-                .then((response) => {
-                    this.setState({isLoading: false});
-                    console.log('response.data.token', response.data.token);
-                    return AsyncStorage.setItem('userToken', response.data.token);
-                })
+            SignupService(username, email, password)
+                .then(() => LoginService(email, password))
+                .then(() => this.setState({isLoading: false}))
                 .then(() => this.navigateToMainScreen())
                 .catch((error) => {
                     this.setState({isLoading: false});
