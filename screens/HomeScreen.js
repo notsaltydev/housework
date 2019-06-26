@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {LayoutAnimation, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {Ionicons} from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import HeaderRight from '../components/HeaderRight';
 import HorizontalScrollTask from '../components/HorizontalScrollTask';
 import GroupCard from '../components/GroupCard';
+
+import {HttpClientService} from "../services/HttpClientService";
 
 export default class HomeScreen extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -59,14 +61,28 @@ export default class HomeScreen extends Component {
                 {id: 7890, image: '', icon: ''},
                 {id: 8909, image: '', icon: ''},
             ],
+            name: ''
         }
     }
 
+    componentDidMount() {
+        HttpClientService.getUserMe()
+            .then((response) => {
+                LayoutAnimation.easeInEaseOut();
+
+                this.setState({
+                    name: response.data.name
+                })
+            })
+            .catch(error => console.log(error));
+    }
+
     render() {
+        const {name} = this.state;
         return (
             <View style={styles.container}>
                 <View style={[styles.container, styles.title, styles.userBoard]}>
-                    <Text style={[styles.textTitle, styles.containerOffset]}>Hello, Maggie</Text>
+                    <Text style={[styles.textTitle, styles.containerOffset]}> {!!name ? 'Hello, ' + name : ''}</Text>
                     <View style={[styles.taskBarContainer, styles.containerOffset]}>
                         <Text style={styles.taskBarLabel}>Your Tasks</Text>
 
