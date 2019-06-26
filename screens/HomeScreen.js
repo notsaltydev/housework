@@ -129,6 +129,14 @@ export default class HomeScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
+    containerOffset: {
+        paddingLeft: 26,
+        paddingRight: 26
+    },
     title: {},
     textTitle: {
         color: '#F0D4CC',
@@ -161,13 +169,5 @@ const styles = StyleSheet.create({
     },
     otherTaskBarLink: {
         color: '#1E1B1B',
-    },
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    containerOffset: {
-        paddingLeft: 26,
-        paddingRight: 26
     }
 });
