@@ -1,5 +1,15 @@
 import React, {Component} from 'react';
-import {Platform, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+    AsyncStorage,
+    Button,
+    Platform,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import HeaderRight from "../components/HeaderRight";
@@ -91,6 +101,11 @@ export default class LinksScreen extends Component {
         }
     });
 
+    _signOutAsync = async () => {
+        await AsyncStorage.clear();
+        this.props.navigation.navigate('Auth');
+    };
+
     renderListCards() {
         return TASKS.map((task, index) => {
             return this.renderCard(task, index);
@@ -112,6 +127,9 @@ export default class LinksScreen extends Component {
                     marginLeft: 26,
                 }}
             >
+                <View>
+                    <Button title="Logout" onPress={this._signOutAsync}/>
+                </View>
             </View>
         );
     }
@@ -129,7 +147,7 @@ export default class LinksScreen extends Component {
                             <Text style={styles.taskBarLabel}>Confirmed</Text>
                         </View>
                     </View>
-                    <ScrollView style={{flex: 1}}>
+                    <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
                         {this.renderListCards()}
                     </ScrollView>
                 </SafeAreaView>
