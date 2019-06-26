@@ -9,9 +9,8 @@ export const AuthInterceptor = axios.create({
 });
 
 AuthInterceptor.interceptors.response.use(async (response) => {
-    await AsyncStorage.setItem('userToken', response.data.token);
+        await AsyncStorage.setItem('userToken', response.data.token);
 
-    return response;
-}, (error) => {
-    Promise.reject(error);
-});
+        return response;
+    }, (error) => Promise.reject(error)
+);

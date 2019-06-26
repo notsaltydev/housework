@@ -6,5 +6,5 @@ export const LoginService = (email, password) => {
             email: email,
             password: password
         })
-        .catch(err => err);
+        .catch(error => Promise.reject(error));
 };

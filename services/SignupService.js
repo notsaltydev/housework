@@ -14,5 +14,5 @@ export const SignupService = (username, email, password) => {
                 'Content-Type': 'application/json'
             }
         })
-        .catch(err => err);
+        .catch(error => Promise.reject(error));
 };

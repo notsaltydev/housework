@@ -1,15 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {
-    Alert,
-    AsyncStorage,
-    Dimensions,
-    KeyboardAvoidingView,
-    LayoutAnimation,
-    StyleSheet,
-    Text,
-    View
-} from 'react-native';
+import {Alert, Dimensions, KeyboardAvoidingView, LayoutAnimation, StyleSheet, Text, View} from 'react-native';
 
 import {Button, Input} from 'react-native-elements';
 
@@ -82,7 +73,7 @@ export default class LoginScreen extends Component {
     };
 
     login() {
-        const {email, password, isEmailValid, isPasswordValid} = this.state;
+        const {email, password} = this.state;
 
         LayoutAnimation.easeInEaseOut();
 
@@ -95,11 +86,7 @@ export default class LoginScreen extends Component {
             this.setState({isLoading: true});
 
             LoginService(email, password)
-                .then((response) => {
-                    this.setState({isLoading: false});
-
-                    return AsyncStorage.setItem('userToken', response.data.token);
-                })
+                .then(() => this.setState({isLoading: false}))
                 .then(() => this.navigateToMainScreen())
                 .catch((error) => {
                     this.setState({isLoading: false});
