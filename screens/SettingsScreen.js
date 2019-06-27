@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
     AsyncStorage,
-    Button,
+    Image,
     Platform,
     SafeAreaView,
     ScrollView,
@@ -13,11 +13,12 @@ import {
 import {Ionicons} from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import HeaderRight from "../components/HeaderRight";
+import Badge from "../components/Badge";
 
 const TASKS = [
     {
-        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-        badge: 'high',
+        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
+        badge: '#000000',
         name: 'Cleaning up the bedroom',
         label: {
             name: 'cleaning',
@@ -25,8 +26,8 @@ const TASKS = [
         }
     },
     {
-        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-        badge: 'high',
+        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
+        badge: '#000000',
         name: 'Take out the thrash',
         label: {
             name: 'cleaning',
@@ -34,8 +35,8 @@ const TASKS = [
         }
     },
     {
-        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-        badge: 'high',
+        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
+        badge: '#000000',
         name: 'Do the shopping list for the next week',
         label: {
             name: 'cleaning',
@@ -43,8 +44,8 @@ const TASKS = [
         }
     },
     {
-        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-        badge: 'high',
+        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
+        badge: '#000000',
         name: 'Do the ironing',
         label: {
             name: 'cleaning',
@@ -52,8 +53,8 @@ const TASKS = [
         }
     },
     {
-        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-        badge: 'high',
+        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
+        badge: '#000000',
         name: 'Clean all the windows',
         label: {
             name: 'cleaning',
@@ -61,8 +62,8 @@ const TASKS = [
         }
     },
     {
-        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-        badge: 'high',
+        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
+        badge: '#000000',
         name: 'Plan holidays',
         label: {
             name: 'cleaning',
@@ -70,8 +71,8 @@ const TASKS = [
         }
     },
     {
-        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-        badge: 'high',
+        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
+        badge: '#000000',
         name: 'Learn english',
         label: {
             name: 'cleaning',
@@ -117,18 +118,72 @@ export default class SettingsScreen extends Component {
             <View
                 key={index}
                 style={{
-                    height: 60,
-                    marginHorizontal: 10,
-                    marginTop: 24,
-                    backgroundColor: '#ececec',
-                    alignItems: 'center',
                     flexDirection: 'row',
+                    alignItems: 'center',
+                    minHeight: 37,
+                    marginTop: 24,
                     marginRight: 26,
-                    marginLeft: 26,
+                    marginLeft: 26
                 }}
             >
-                <View>
-                    <Button title="Logout" onPress={this._signOutAsync}/>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                }}
+                >
+
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'flex-start',
+                        marginRight: 22
+                    }}>
+                        <Badge
+                            containerStyle={{marginRight: 12, position: 'relative', top: 6}}
+                            color={task.badge}
+                        />
+                        <View style={{width: 165}}>
+                            <Text style={{
+                                fontSize: 16,
+                                lineHeight: 22,
+                                fontWeight: 'bold'
+                            }}>
+                                {task.name}
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={{
+                        backgroundColor: '#F7C041',
+                        marginRight: 9,
+                        paddingRight: 8,
+                        paddingLeft: 8,
+                        paddingTop: 4,
+                        paddingBottom: 4,
+                        borderRadius: 10
+                    }}>
+                        <Text style={{
+                            fontSize: 9,
+                            lineHeight: 12,
+                            fontWeight: 'bold',
+                            color: 'white',
+                            textTransform: 'uppercase',
+                        }}
+                        >{task.label.name}</Text>
+                    </View>
+                    <View style={{
+                        marginRight: 8
+                    }}>
+                        <Image
+                            style={{width: 25, height: 25,}}
+                            source={{uri: task.avatar}}
+                        />
+                    </View>
+                    <View>
+                        <Ionicons
+                            name={Platform.OS === 'ios' ? 'ios-more' : 'md-more'}
+                            size={20}
+                            style={{transform: [{rotate: '90deg'}]}}
+                        />
+                    </View>
                 </View>
             </View>
         );
@@ -168,7 +223,9 @@ const styles = StyleSheet.create({
         paddingLeft: 26,
         paddingRight: 26
     },
-    title: {},
+    title: {
+        paddingBottom: 5
+    },
     textTitle: {
         color: '#28165B',
         fontSize: 32,
