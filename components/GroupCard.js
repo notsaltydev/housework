@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Image, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Ionicons} from "@expo/vector-icons";
+
+import Badge from "./Badge";
 
 export default class GroupCard extends Component {
 
@@ -8,11 +11,65 @@ export default class GroupCard extends Component {
     }
 
     render() {
-        const {image, icon, name} = this.props.item;
+        const {avatar, badge, name, label} = this.props.item;
 
         return (
             <View style={[styles.container, styles.shadow]}>
-                <Text>Clean up the bedroom</Text>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginBottom: 10
+                }}>
+                    <View>
+                        <Badge
+                            containerStyle={{marginRight: 12, position: 'relative', top: 6}}
+                            color={badge}
+                        />
+                    </View>
+                    <TouchableOpacity>
+                        <Ionicons
+                            name={Platform.OS === 'ios' ? 'ios-more' : 'md-more'}
+                            size={20}
+                            style={{transform: [{rotate: '90deg'}]}}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <View style={{}}>
+                    <Text ellipsizeMode='tail' numberOfLines={2} style={{
+                        width: 158,
+                        fontSize: 16,
+                        lineHeight: 22,
+                        fontWeight: 'bold'
+                    }}>{name}</Text>
+                </View>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 10,
+                    alignItems: 'flex-end',
+                }}>
+                    <View style={{
+                        backgroundColor: '#F7C041',
+                        paddingRight: 8,
+                        paddingLeft: 8,
+                        paddingTop: 4,
+                        paddingBottom: 4,
+                        borderRadius: 10
+                    }}>
+                        <Text style={{
+                            fontSize: 9,
+                            lineHeight: 12,
+                            fontWeight: 'bold',
+                            color: 'white',
+                            textTransform: 'uppercase',
+                        }}
+                        >{label.name}</Text>
+                    </View>
+                    <Image
+                        style={{width: 25, height: 25,}}
+                        source={{uri: avatar}}
+                    />
+                </View>
             </View>
         );
     }
@@ -45,8 +102,13 @@ const styles = StyleSheet.create({
         height: 135,
         borderRadius: 5,
         backgroundColor: '#ececec',
+        paddingTop: 10,
+        paddingBottom: 15,
+        paddingLeft: 15,
+        paddingRight: 15,
         margin: 10,
         flexDirection: 'column',
+        justifyContent: 'space-between'
     },
     shadow: {
         ...shadow({

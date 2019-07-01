@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {LayoutAnimation, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {Ionicons} from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import HeaderRight from '../components/HeaderRight';
 import HorizontalScrollTask from '../components/HorizontalScrollTask';
 import GroupCard from '../components/GroupCard';
-
+import {TASKS} from "../mocks/tasks";
 import {HttpClientService} from "../services/HttpClientService";
 
 export default class HomeScreen extends Component {
@@ -35,32 +35,7 @@ export default class HomeScreen extends Component {
         super(props);
 
         this.state = {
-            taskList: [
-                {
-                    id: 1234,
-                    name: 'Beer',
-                    image:
-                        'https://cdn.britannica.com/700x450/72/186972-049-26ACDCBE.jpg',
-                    icon: '',
-                },
-                {
-                    id: 2345,
-                    name: 'Arcade',
-                    image: 'http://www.thebasementarcade.com/gameroom/0516/1.jpg',
-                    icon: '',
-                },
-                {
-                    id: 3456,
-                    name: 'Nature',
-                    image:
-                        'https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&h=350',
-                    icon: '',
-                },
-                {id: 4567, image: '', icon: ''},
-                {id: 6789, image: '', icon: ''},
-                {id: 7890, image: '', icon: ''},
-                {id: 8909, image: '', icon: ''},
-            ],
+            taskList: [...TASKS],
             name: ''
         }
     }
@@ -68,8 +43,6 @@ export default class HomeScreen extends Component {
     componentDidMount() {
         HttpClientService.getUserMe()
             .then((response) => {
-                LayoutAnimation.easeInEaseOut();
-
                 this.setState({
                     name: response.data.name
                 })

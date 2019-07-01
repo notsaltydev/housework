@@ -14,72 +14,7 @@ import {Ionicons} from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import HeaderRight from "../components/HeaderRight";
 import Badge from "../components/Badge";
-
-const TASKS = [
-    {
-        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
-        badge: '#000000',
-        name: 'Cleaning up the bedroom',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-    {
-        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
-        badge: '#000000',
-        name: 'Take out the thrash',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-    {
-        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
-        badge: '#000000',
-        name: 'Do the shopping list for the next week',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-    {
-        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
-        badge: '#000000',
-        name: 'Do the ironing',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-    {
-        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
-        badge: '#000000',
-        name: 'Clean all the windows',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-    {
-        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
-        badge: '#000000',
-        name: 'Plan holidays',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-    {
-        avatar: 'http://bibimungu.co.tz/uploads/user.jpg',
-        badge: '#000000',
-        name: 'Learn english',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-];
+import {TASKS} from "../mocks/tasks";
 
 export default class SettingsScreen extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -102,13 +37,21 @@ export default class SettingsScreen extends Component {
         }
     });
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            tasks: [...TASKS]
+        }
+    }
+
     _signOutAsync = async () => {
         await AsyncStorage.clear();
         this.props.navigation.navigate('Auth');
     };
 
     renderListCards() {
-        return TASKS.map((task, index) => {
+        return this.state.tasks.map((task, index) => {
             return this.renderCard(task, index);
         });
     }

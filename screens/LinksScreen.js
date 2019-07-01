@@ -14,72 +14,7 @@ import {Ionicons} from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import HeaderRight from "../components/HeaderRight";
 import Badge from "../components/Badge";
-
-const TASKS = [
-    {
-        avatar: 'https://ya-webdesign.com/transparent450_/girl-avatar-png-2.png',
-        badge: '#F43D0B',
-        name: 'Cleaning up the bedroom',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-    {
-        avatar: 'https://ya-webdesign.com/transparent450_/girl-avatar-png-2.png',
-        badge: '#F43D0B',
-        name: 'Take out the thrash',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-    {
-        avatar: 'https://ya-webdesign.com/transparent450_/girl-avatar-png-2.png',
-        badge: '#FD9C0C',
-        name: 'Do the shopping list for the next week',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-    {
-        avatar: 'https://ya-webdesign.com/transparent450_/girl-avatar-png-2.png',
-        badge: '#FD9C0C',
-        name: 'Do the ironing',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-    {
-        avatar: 'https://ya-webdesign.com/transparent450_/girl-avatar-png-2.png',
-        badge: '#FD9C0C',
-        name: 'Clean all the windows',
-        label: {
-            name: 'cleaning',
-            color: '#FD9C0C'
-        }
-    },
-    {
-        avatar: 'https://ya-webdesign.com/transparent450_/girl-avatar-png-2.png',
-        badge: '#F8D311',
-        name: 'Plan holidays',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-    {
-        avatar: 'https://ya-webdesign.com/transparent450_/girl-avatar-png-2.png',
-        badge: '#F8D311',
-        name: 'Learn english',
-        label: {
-            name: 'cleaning',
-            color: 'primary'
-        }
-    },
-];
+import {TASKS} from "../mocks/tasks";
 
 export default class LinksScreen extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -108,7 +43,7 @@ export default class LinksScreen extends Component {
     };
 
     renderListCards() {
-        return TASKS.map((task, index) => {
+        return [...TASKS].map((task, index) => {
             return this.renderCard(task, index);
         });
     }
