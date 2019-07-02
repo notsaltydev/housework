@@ -1,35 +1,14 @@
 import React, {Component} from 'react';
-import {
-    AsyncStorage,
-    Image,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import {AsyncStorage, Image, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
-import Colors from "../constants/Colors";
 import HeaderRight from "../components/HeaderRight";
 import Badge from "../components/Badge";
 import {TASKS} from "../mocks/tasks";
+import HamburgerIcon from "../components/HamburgerIcon";
 
 export default class SettingsScreen extends Component {
     static navigationOptions = ({navigation}) => ({
-        headerLeft: () => {
-            return (
-                <TouchableOpacity>
-                    <Ionicons
-                        name={Platform.OS === 'ios' ? 'ios-menu' : 'md-menu'}
-                        size={26}
-                        style={{marginLeft: 24, color: 'black'}}
-                        color={Colors.tabIconDefault}
-                    />
-                </TouchableOpacity>
-            );
-        },
+        headerLeft: <HamburgerIcon/>,
         headerRight: <HeaderRight title="Info"/>,
         headerStyle: {
             borderBottomWidth: 0,

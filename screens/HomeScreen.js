@@ -1,28 +1,15 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-
-import {Ionicons} from '@expo/vector-icons';
-import Colors from '../constants/Colors';
+import {StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import HeaderRight from '../components/HeaderRight';
 import HorizontalScrollTask from '../components/HorizontalScrollTask';
 import GroupCard from '../components/GroupCard';
 import {TASKS} from "../mocks/tasks";
 import {HttpClientService} from "../services/HttpClientService";
+import HamburgerIcon from "../components/HamburgerIcon";
 
 export default class HomeScreen extends Component {
     static navigationOptions = ({navigation}) => ({
-        headerLeft: () => {
-            return (
-                <TouchableOpacity>
-                    <Ionicons
-                        name={Platform.OS === 'ios' ? 'ios-menu' : 'md-menu'}
-                        size={26}
-                        style={{marginLeft: 24}}
-                        color={Colors.tabIconDefault}
-                    />
-                </TouchableOpacity>
-            );
-        },
+        headerLeft: <HamburgerIcon/>,
         headerRight: <HeaderRight title="Info"/>,
         headerStyle: {
             borderBottomWidth: 0,
@@ -54,6 +41,7 @@ export default class HomeScreen extends Component {
         const {name} = this.state;
         return (
             <View style={styles.container}>
+                <StatusBar barStyle="light-content"/>
                 <View style={[styles.container, styles.title, styles.userBoard]}>
                     <Text style={[styles.textTitle, styles.containerOffset]}> {!!name ? 'Hello, ' + name : ''}</Text>
                     <View style={[styles.taskBarContainer, styles.containerOffset]}>

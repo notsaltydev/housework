@@ -5,31 +5,21 @@ import {
     Platform,
     SafeAreaView,
     ScrollView,
+    StatusBar,
     StyleSheet,
     Text,
     TouchableOpacity,
     View,
 } from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
-import Colors from "../constants/Colors";
 import HeaderRight from "../components/HeaderRight";
 import Badge from "../components/Badge";
 import {TASKS} from "../mocks/tasks";
+import HamburgerIcon from "../components/HamburgerIcon";
 
 export default class LinksScreen extends Component {
     static navigationOptions = ({navigation}) => ({
-        headerLeft: () => {
-            return (
-                <TouchableOpacity>
-                    <Ionicons
-                        name={Platform.OS === 'ios' ? 'ios-menu' : 'md-menu'}
-                        size={26}
-                        style={{marginLeft: 24, color: 'black'}}
-                        color={Colors.tabIconDefault}
-                    />
-                </TouchableOpacity>
-            );
-        },
+        headerLeft: <HamburgerIcon/>,
         headerRight: <HeaderRight title="Info"/>,
         headerStyle: {
             borderBottomWidth: 0,
@@ -129,6 +119,7 @@ export default class LinksScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <StatusBar  barStyle="dark-content" />
                 <SafeAreaView
                     style={[styles.container, styles.area]}
                 >
