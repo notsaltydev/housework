@@ -5,7 +5,6 @@ import {
     Platform,
     SafeAreaView,
     ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -103,7 +102,7 @@ export default class LinksScreen extends Component {
                         />
                     </View>
                     <View>
-                        <TouchableOpacity onPress={() => this._signOutAsync()}>
+                        <TouchableOpacity>
                             <Ionicons
                                 name={Platform.OS === 'ios' ? 'ios-more' : 'md-more'}
                                 size={20}
@@ -119,7 +118,6 @@ export default class LinksScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar  barStyle="dark-content" />
                 <SafeAreaView
                     style={[styles.container, styles.area]}
                 >

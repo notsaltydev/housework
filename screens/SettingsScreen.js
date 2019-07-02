@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage, Image, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Image, Platform, SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Ionicons} from "@expo/vector-icons";
 import HeaderRight from "../components/HeaderRight";
 import Badge from "../components/Badge";
@@ -23,11 +23,6 @@ export default class SettingsScreen extends Component {
             tasks: [...TASKS]
         }
     }
-
-    _signOutAsync = async () => {
-        await AsyncStorage.clear();
-        this.props.navigation.navigate('Auth');
-    };
 
     renderListCards() {
         return this.state.tasks.map((task, index) => {

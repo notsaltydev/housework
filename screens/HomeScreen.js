@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import HeaderRight from '../components/HeaderRight';
 import HorizontalScrollTask from '../components/HorizontalScrollTask';
 import GroupCard from '../components/GroupCard';
@@ -41,7 +41,6 @@ export default class HomeScreen extends Component {
         const {name} = this.state;
         return (
             <View style={styles.container}>
-                <StatusBar barStyle="light-content"/>
                 <View style={[styles.container, styles.title, styles.userBoard]}>
                     <Text style={[styles.textTitle, styles.containerOffset]}> {!!name ? 'Hello, ' + name : ''}</Text>
                     <View style={[styles.taskBarContainer, styles.containerOffset]}>
