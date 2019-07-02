@@ -42,7 +42,8 @@ export default class HomeScreen extends Component {
         return (
             <View style={styles.container}>
                 <View style={[styles.container, styles.title, styles.userBoard]}>
-                    <Text style={[styles.textTitle, styles.containerOffset]}> {!!name ? 'Hello, ' + name : ''}</Text>
+                    <Text ellipsizeMode='tail' numberOfLines={1}
+                          style={[styles.textTitle, styles.containerOffset]}> {!!name ? 'Hello, ' + name : ''}</Text>
                     <View style={[styles.taskBarContainer, styles.containerOffset]}>
                         <Text style={styles.taskBarLabel}>Your Tasks</Text>
 

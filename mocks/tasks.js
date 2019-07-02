@@ -69,4 +69,24 @@ export const TASKS = [
             color: 'primary'
         }
     },
+    {
+        id: 8,
+        avatar: 'https://ya-webdesign.com/transparent450_/girl-avatar-png-2.png',
+        badge: '#d5f100',
+        name: 'Learn english: Vocabulary',
+        label: {
+            name: 'cleaning',
+            color: 'primary'
+        }
+    },
+    {
+        id: 9,
+        avatar: 'https://ya-webdesign.com/transparent450_/girl-avatar-png-2.png',
+        badge: '#d5f100',
+        name: 'Learn english: Vocabulary',
+        label: {
+            name: 'cleaning',
+            color: 'primary'
+        }
+    },
 ];

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, View} from 'react-native';
+import {View} from 'react-native';
 import {createBottomTabNavigator, createStackNavigator,} from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
@@ -16,9 +16,7 @@ HomeStack.navigationOptions = {
     tabBarIcon: ({focused}) => (
         <TabBarIcon
             focused={focused}
-            name={
-                Platform.OS === 'ios' ? 'ios-home' : 'md-home'
-            }
+            name={'home'}
         />
     ),
 };
@@ -32,7 +30,7 @@ LinksStack.navigationOptions = {
     tabBarIcon: ({focused}) => (
         <TabBarIcon
             focused={focused}
-            name={Platform.OS === 'ios' ? 'ios-list' : 'md-list'}
+            name={'tasks'}
         />
     ),
 };
@@ -46,7 +44,7 @@ SettingsStack.navigationOptions = {
     tabBarIcon: ({focused}) => (
         <TabBarIcon
             focused={focused}
-            name={Platform.OS === 'ios' ? 'ios-timer' : 'md-timer'}
+            name={'history'}
         />
     ),
 };
