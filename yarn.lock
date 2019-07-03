@@ -5926,6 +5926,11 @@ react-native-elements@^1.1.0:
     react-native-ratings "^6.3.0"
     react-native-status-bar-height "^2.2.0"
 
+react-native-floating-action@^1.17.0:
+  version "1.17.0"
+  resolved "https://artifactory.eskyspace.com/api/npm/npm/react-native-floating-action/-/react-native-floating-action-1.17.0.tgz#abf4828c4dc726c662b0327e4900a72825830971"
+  integrity sha1-q/SCjE3HJsZisDJ+SQCnKCWDCXE=
+
 react-native-gesture-handler@1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-1.2.1.tgz#9c48fb1ab13d29cece24bbb77b1e847eebf27a2b"

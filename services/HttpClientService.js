@@ -5,6 +5,12 @@ const getUserMe = () => {
         .catch(error => Promise.reject(error));
 };
 
+const getUserGroups = () => {
+    return HttpClientInterceptor.get('/api/group')
+        .catch(error => Promise.reject(error));
+};
+
 export const HttpClientService = {
-    getUserMe
+    getUserMe,
+    getUserGroups
 };

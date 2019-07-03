@@ -6,6 +6,7 @@ import {Button, Input} from 'react-native-elements';
 
 import {LoginService} from '../services/LoginService';
 import {SignupService} from '../services/SignupService';
+import {HttpClientService} from "../services/HttpClientService";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -68,8 +69,14 @@ export default class LoginScreen extends Component {
         return re.test(email);
     }
 
-    navigateToMainScreen = () => {
-        this.props.navigation.navigate('Main');
+    navigateToMainScreen = async () => {
+        const groups = await HttpClientService.getUserGroups();
+
+        if (groups && groups.length) {
+            this.props.navigation.navigate('Main');
+        }
+
+        this.props.navigation.navigate('SetupGroup');
     };
 
     login() {

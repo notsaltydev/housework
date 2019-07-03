@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {ActivityIndicator, AsyncStorage, StatusBar, View} from 'react-native';
+import {ActivityIndicator, AsyncStorage, SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {HttpClientService} from "../services/HttpClientService";
 
 export default class AuthLoadingScreen extends Component {
 
@@ -12,19 +13,34 @@ export default class AuthLoadingScreen extends Component {
     _bootstrapAsync = async () => {
         const userToken = await AsyncStorage.getItem('userToken');
 
-        // This will switch to the App screen or Auth screen and this loading
-        // screen will be unmounted and thrown away.
-        this.props.navigation.navigate(userToken ? 'Main' : 'Auth');
+        if (userToken) {
+            const userGroups = await HttpClientService.getUserGroups();
+
+            if (userGroups.length) {
+                return this.props.navigation.navigate('Main');
+            } else {
+                this.props.navigation.navigate('SetupGroup');
+            }
+        } else {
+            return this.props.navigation.navigate('Auth');
+        }
     };
 
     // Render any loading content that you like here
     render() {
         return (
-            <View>
+            <SafeAreaView style={styles.container}>
                 <ActivityIndicator/>
                 <StatusBar barStyle="default"/>
-            </View>
+            </SafeAreaView>
         );
     }
 
 }
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+});
