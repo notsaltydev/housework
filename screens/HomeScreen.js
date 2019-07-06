@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, Alert, AsyncStorage, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import HeaderRight from '../components/HeaderRight';
 import HorizontalScrollTask from '../components/HorizontalScrollTask';
 import GroupCard from '../components/GroupCard';
-import {TASKS} from "../mocks/tasks";
 import {HttpClientService} from "../services/HttpClientService";
 import HamburgerIcon from "../components/HamburgerIcon";
 
@@ -22,23 +21,98 @@ export default class HomeScreen extends Component {
         super(props);
 
         this.state = {
-            taskList: [...TASKS],
-            name: ''
-        }
+            taskList: [],
+            name: '',
+            tasksLoading: true
+        };
+
+        this.getUser();
+
+        console.log('constructor');
+    }
+
+    componentWillMount() {
+        console.log('componentWillMount');
+    }
+
+    componentDidCatch() {
+        console.log('componentDidCatch');
+    }
+
+    componentDidUpdate() {
+        console.log('componentDidUpdate');
+    }
+
+    componentWillReceiveProps() {
+        console.log('componentWillReceiveProps');
+    }
+
+    componentWillUnmount() {
+        console.log('componentWillUnmount');
+    }
+
+    componentWillUpdate() {
+        console.log('componentWillUpdate');
     }
 
     componentDidMount() {
-        HttpClientService.getUserMe()
+        console.log('componentDidMount');
+    }
+
+    async getUser() {
+        const user = await HttpClientService.getUserMe();
+        const groupId = await this.getUserGroupId();
+
+        HttpClientService.getTasksForGroup(groupId)
             .then((response) => {
-                this.setState({
-                    name: response.data.name
-                })
+                return response.data.map((task) => {
+                    return {
+                        id: task.id,
+                        avatar: 'https://ya-webdesign.com/transparent450_/girl-avatar-png-2.png',
+                        badge: '#F43D0B',
+                        name: task.name,
+                        label: {
+                            name: 'cleaning',
+                            color: 'primary'
+                        }
+
+                    };
+                });
             })
-            .catch(error => console.log(error));
+            .then((tasks) => {
+                this.setState({
+                    tasksLoading: false,
+                    taskList: tasks
+                });
+            })
+            .catch((error) => {
+                this.setState({tasksLoading: false});
+                console.log('error', error);
+                Alert.alert(`Error: ${error.code || ''} 🔥`, error.message || error);
+            });
+
+        if (user) {
+            this.setState({
+                name: user.data.name
+            });
+        }
+    }
+
+    async getUserGroupId() {
+        const defaultUserGroupId = await AsyncStorage.getItem('defaultGroupId');
+
+        if (!defaultUserGroupId) {
+            const groups = await HttpClientService.getUserGroups();
+            // todo: handle default group
+            return groups.data[0].id;
+        }
+
+        return defaultUserGroupId;
     }
 
     render() {
-        const {name} = this.state;
+        const {name, tasksLoading, taskList} = this.state;
+
         return (
             <View style={styles.container}>
                 <View style={[styles.container, styles.title, styles.userBoard]}>
@@ -52,15 +126,21 @@ export default class HomeScreen extends Component {
                         </TouchableOpacity>
                     </View>
                     <View>
-                        <HorizontalScrollTask
-                            data={this.state.taskList}
-                            renderItem={({item}) => (
-                                <View style={{marginRight: 6}}>
-                                    <GroupCard item={item}/>
-                                </View>
-                            )}
-                            keyExtractor={(item) => `item-${item.id}`}
-                        />
+                        {
+                            tasksLoading || taskList.length === 0 ? (
+                                <ActivityIndicator/>
+                            ) : (
+                                <HorizontalScrollTask
+                                    data={taskList}
+                                    renderItem={({item}) => (
+                                        <View style={{marginRight: 6}}>
+                                            <GroupCard item={item}/>
+                                        </View>
+                                    )}
+                                    keyExtractor={(item) => `item-${item.id}`}
+                                />
+                            )
+                        }
                     </View>
                 </View>
                 <View style={[styles.container]}>
@@ -72,15 +152,21 @@ export default class HomeScreen extends Component {
                         </TouchableOpacity>
                     </View>
                     <View>
-                        <HorizontalScrollTask
-                            data={this.state.taskList}
-                            renderItem={({item}) => (
-                                <View style={{marginRight: 6}}>
-                                    <GroupCard item={item}/>
-                                </View>
-                            )}
-                            keyExtractor={(item) => `item-${item.id}`}
-                        />
+                        {
+                            tasksLoading || taskList.length === 0 ? (
+                                <ActivityIndicator/>
+                            ) : (
+                                <HorizontalScrollTask
+                                    data={taskList}
+                                    renderItem={({item}) => (
+                                        <View style={{marginRight: 6}}>
+                                            <GroupCard item={item}/>
+                                        </View>
+                                    )}
+                                    keyExtractor={(item) => `item-${item.id}`}
+                                />
+                            )
+                        }
                     </View>
                 </View>
             </View>

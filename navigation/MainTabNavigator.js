@@ -55,6 +55,7 @@ export default createBottomTabNavigator({
         SettingsStack,
     },
     {
+        initialRouteName: 'HomeStack',
         tabBarOptions: {
             style: {
                 height: 65

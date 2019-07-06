@@ -1,6 +1,15 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Alert, Dimensions, KeyboardAvoidingView, LayoutAnimation, StyleSheet, Text, View} from 'react-native';
+import {
+    Alert,
+    AsyncStorage,
+    Dimensions,
+    KeyboardAvoidingView,
+    LayoutAnimation,
+    StyleSheet,
+    Text,
+    View
+} from 'react-native';
 
 import {Button, Input} from 'react-native-elements';
 
@@ -64,18 +73,20 @@ export default class LoginScreen extends Component {
     }
 
     validateEmail(email) {
-        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const emailRegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-        return re.test(email);
+        return emailRegExp.test(email);
     }
 
-    navigateToMainScreen = async () => {
+    navigateToScreen = async () => {
         const groups = await HttpClientService.getUserGroups();
 
-        if (groups && groups.length) {
+        if (groups.data && groups.data.length) {
+            await AsyncStorage.setItem('defaultGroupId', groups.data[0].id);
+            console.log('---MainStack---');
             return this.props.navigation.navigate('MainStack');
         }
-
+        console.log('---SetupGroupStack---');
         this.props.navigation.navigate('SetupGroupStack');
     };
 
@@ -94,7 +105,7 @@ export default class LoginScreen extends Component {
 
             LoginService(email, password)
                 .then(() => this.setState({isLoading: false}))
-                .then(() => this.navigateToMainScreen())
+                .then(() => this.navigateToScreen())
                 .catch((error) => {
                     this.setState({isLoading: false});
                     console.log('error', error);
@@ -122,7 +133,7 @@ export default class LoginScreen extends Component {
             SignupService(username, email, password)
                 .then(() => LoginService(email, password))
                 .then(() => this.setState({isLoading: false}))
-                .then(() => this.navigateToMainScreen())
+                .then(() => this.navigateToScreen())
                 .catch((error) => {
                     this.setState({isLoading: false});
                     console.log('error', error);

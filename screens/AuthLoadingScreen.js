@@ -14,9 +14,12 @@ export default class AuthLoadingScreen extends Component {
         const userToken = await AsyncStorage.getItem('userToken');
 
         if (userToken) {
-            const userGroups = await HttpClientService.getUserGroups();
+            const groups = await HttpClientService.getUserGroups();
 
-            if (userGroups.length !== 0) {
+            if (groups.data.length !== 0) {
+                console.log('defaultGroupId', groups.data)
+                await AsyncStorage.setItem('defaultGroupId', groups.data[0].id);
+
                 return this.props.navigation.navigate('MainStack');
             }
             return this.props.navigation.navigate('SetupGroupStack');

@@ -53,8 +53,9 @@ export default class SetupGroupScreen extends Component {
                         'Authorization': `Bearer ${token}`
                     }
                 })
-                .then(() => {
+                .then(async (response) => {
                     this.setState({isLoading: false});
+                    await AsyncStorage.setItem('defaultGroupId', response.data.id);
 
                     this.props.navigation.navigate('MainStack');
                 })
