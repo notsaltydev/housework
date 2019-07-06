@@ -28,7 +28,7 @@ export default class LinksScreen extends Component {
 
     _signOutAsync = async () => {
         await AsyncStorage.clear();
-        this.props.navigation.navigate('Auth');
+        this.props.navigation.navigate('AuthStack');
     };
 
     renderListCards() {

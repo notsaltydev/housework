@@ -73,10 +73,10 @@ export default class LoginScreen extends Component {
         const groups = await HttpClientService.getUserGroups();
 
         if (groups && groups.length) {
-            this.props.navigation.navigate('Main');
+            return this.props.navigation.navigate('MainStack');
         }
 
-        this.props.navigation.navigate('SetupGroup');
+        this.props.navigation.navigate('SetupGroupStack');
     };
 
     login() {

@@ -11,7 +11,7 @@ export default class DrawerContentComponent extends Component {
     _signOutAsync = async () => {
         await AsyncStorage.clear();
 
-        this.props.navigation.navigate('Auth');
+        this.props.navigation.navigate('AuthStack');
     };
 
     render() {

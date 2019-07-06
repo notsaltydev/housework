@@ -16,13 +16,12 @@ export default class AuthLoadingScreen extends Component {
         if (userToken) {
             const userGroups = await HttpClientService.getUserGroups();
 
-            if (userGroups.length) {
-                return this.props.navigation.navigate('Main');
-            } else {
-                this.props.navigation.navigate('SetupGroup');
+            if (userGroups.length !== 0) {
+                return this.props.navigation.navigate('MainStack');
             }
+            return this.props.navigation.navigate('SetupGroupStack');
         } else {
-            return this.props.navigation.navigate('Auth');
+            return this.props.navigation.navigate('AuthStack');
         }
     };
 
@@ -30,7 +29,7 @@ export default class AuthLoadingScreen extends Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
-                <ActivityIndicator/>
+                <ActivityIndicator size="large"/>
                 <StatusBar barStyle="default"/>
             </SafeAreaView>
         );

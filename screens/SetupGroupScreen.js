@@ -53,10 +53,10 @@ export default class SetupGroupScreen extends Component {
                         'Authorization': `Bearer ${token}`
                     }
                 })
-                .then((response) => {
+                .then(() => {
                     this.setState({isLoading: false});
 
-                    this.props.navigation.navigate('Main');
+                    this.props.navigation.navigate('MainStack');
                 })
                 .catch(error => {
                     this.setState({isLoading: false});
