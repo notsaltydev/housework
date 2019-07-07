@@ -15,6 +15,7 @@ import HeaderRight from "../components/HeaderRight";
 import Badge from "../components/Badge";
 import {TASKS} from "../mocks/tasks";
 import HamburgerIcon from "../components/HamburgerIcon";
+import FabButton from "../components/FabButton";
 
 export default class LinksScreen extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -132,7 +133,9 @@ export default class LinksScreen extends Component {
                         {this.renderListCards()}
                     </ScrollView>
                 </SafeAreaView>
-
+                <FabButton
+                    onPress={() => null}
+                />
             </View>
         );
     }

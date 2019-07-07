@@ -5,6 +5,7 @@ import HorizontalScrollTask from '../components/HorizontalScrollTask';
 import GroupCard from '../components/GroupCard';
 import {HttpClientService} from "../services/HttpClientService";
 import HamburgerIcon from "../components/HamburgerIcon";
+import FabButton from "../components/FabButton";
 
 export default class HomeScreen extends Component {
     static navigationOptions = ({navigation}) => ({
@@ -125,7 +126,7 @@ export default class HomeScreen extends Component {
                             <Text style={styles.taskBarLink}>View all</Text>
                         </TouchableOpacity>
                     </View>
-                    <View>
+                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                         {
                             tasksLoading || taskList.length === 0 ? (
                                 <ActivityIndicator/>
@@ -151,7 +152,7 @@ export default class HomeScreen extends Component {
                             <Text style={styles.otherTaskBarLink}>View all</Text>
                         </TouchableOpacity>
                     </View>
-                    <View>
+                    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                         {
                             tasksLoading || taskList.length === 0 ? (
                                 <ActivityIndicator/>
@@ -169,10 +170,17 @@ export default class HomeScreen extends Component {
                         }
                     </View>
                 </View>
+                <FabButton
+                    onPress={() => this.addTask()}
+                />
             </View>
         );
     }
 
+    addTask() {
+        console.log('add task');
+        this.props.navigation.navigate('CreateTaskScreen');
+    }
 }
 
 const styles = StyleSheet.create({

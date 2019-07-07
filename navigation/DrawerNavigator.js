@@ -4,6 +4,7 @@ import BlueScreen from '../screens/BlueScreen';
 import DefaultScreen from '../screens/DefaultScreen';
 import MainTabNavigator from "./MainTabNavigator";
 import DrawerContentComponent from "../components/DrawerContentComponent";
+import CreateTaskScreen from "../screens/CreateTaskScreen";
 
 const HamburgerNavigation = createDrawerNavigator(
     {
@@ -25,6 +26,7 @@ export const Stack = createStackNavigator(
         BlueScreen: BlueScreen,
         DefaultScreen: {
             screen: DefaultScreen,
-        }
+        },
+        CreateTaskScreen: CreateTaskScreen
     }
 );
