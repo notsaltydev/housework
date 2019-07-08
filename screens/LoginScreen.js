@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {
     Alert,
     AsyncStorage,
@@ -18,18 +17,6 @@ import {SignupService} from '../services/SignupService';
 import {HttpClientService} from "../services/HttpClientService";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-
-const TabSelector = ({selected, isLoading}) => {
-    return (
-        <View style={styles.selectorContainer}>
-            <View style={[selected && styles.selected, isLoading && styles.loading]}/>
-        </View>
-    );
-};
-
-TabSelector.propTypes = {
-    selected: PropTypes.bool.isRequired,
-};
 
 export default class LoginScreen extends Component {
     static navigationOptions = {
@@ -177,19 +164,19 @@ export default class LoginScreen extends Component {
                                     type="clear"
                                     activeOpacity={0.7}
                                     onPress={() => this.selectCategory(0)}
-                                    containerStyle={{flex: 1}}
+                                    containerStyle={{marginRight: 5}}
                                     titleStyle={[
                                         styles.categoryText,
                                         isLoginPage && styles.selectedCategoryText,
                                     ]}
-                                    title={'Login'}
+                                    title={'Sign in'}
                                 />
                                 <Button
                                     disabled={isLoading}
                                     type="clear"
                                     activeOpacity={0.7}
                                     onPress={() => this.selectCategory(1)}
-                                    containerStyle={{flex: 1}}
+                                    containerStyle={{marginLeft: 5}}
                                     titleStyle={[
                                         styles.categoryText,
                                         isSignUpPage && styles.selectedCategoryText,
@@ -197,117 +184,59 @@ export default class LoginScreen extends Component {
                                     title={'Sign up'}
                                 />
                             </View>
-                            <View style={styles.rowSelector}>
-                                <TabSelector selected={isLoginPage} isLoading={isLoading}/>
-                                <TabSelector selected={isSignUpPage} isLoading={isLoading}/>
-                            </View>
                             <View style={styles.formContainer}>
                                 {isSignUpPage && (
-                                    <Input
+                                    <FormInput
                                         value={username}
-                                        keyboardAppearance="light"
-                                        autoFocus={false}
-                                        autoCapitalize="none"
-                                        autoCorrect={false}
+                                        refInput={input => (this.usernameInput = input)}
+                                        onChangeText={username => this.setState({username})}
+                                        placeholder="Name"
                                         keyboardType="default"
                                         returnKeyType="next"
-                                        inputStyle={{marginLeft: 10}}
-                                        placeholder={'Name'}
-                                        containerStyle={{
-                                            borderBottomColor: 'rgba(0, 0, 0, 0.38)',
-
-                                        }}
-                                        ref={input => (this.usernameInput = input)}
-                                        onSubmitEditing={() => this.emailInput.focus()}
-                                        onChangeText={username => this.setState({username})}
                                         errorMessage={
                                             isUsernameValid ? null : 'Please enter at least 5 characters'
                                         }
+                                        onSubmitEditing={() => this.emailInput.focus()}
                                     />
                                 )}
-                                <Input
+                                <FormInput
+                                    refInput={input => (this.emailInput = input)}
                                     value={email}
-                                    keyboardAppearance="light"
-                                    autoFocus={false}
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
+                                    onChangeText={email => this.setState({email})}
+                                    placeholder="Email"
                                     keyboardType="email-address"
                                     returnKeyType="next"
-                                    inputStyle={{marginLeft: 10}}
-                                    placeholder={'Email'}
-                                    containerStyle={{
-                                        marginTop: 16,
-                                        borderBottomColor: 'rgba(0, 0, 0, 0.38)',
-                                    }}
-                                    ref={input => (this.emailInput = input)}
-                                    onSubmitEditing={() => this.passwordInput.focus()}
-                                    onChangeText={email => this.setState({email})}
                                     errorMessage={
                                         isEmailValid ? null : 'Please enter a valid email address'
                                     }
-                                />
-                                <Input
-                                    value={password}
-                                    keyboardAppearance="light"
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                    secureTextEntry={true}
-                                    returnKeyType={isSignUpPage ? 'next' : 'done'}
-                                    blurOnSubmit={true}
-                                    containerStyle={{
-                                        marginTop: 16,
-                                        borderBottomColor: 'rgba(0, 0, 0, 0.38)',
+                                    onSubmitEditing={() => {
+                                        this.validateEmail();
+                                        this.passwordInput.focus();
                                     }}
-                                    inputStyle={{marginLeft: 10}}
-                                    placeholder={'Password'}
-                                    ref={input => (this.passwordInput = input)}
-                                    onSubmitEditing={() =>
-                                        isSignUpPage
-                                            ? this.confirmationInput.focus()
-                                            : this.login()
-                                    }
+                                />
+                                <FormInput
+                                    refInput={input => (this.passwordInput = input)}
+                                    value={password}
+                                    otherContainerStyle={{marginBottom: 40}}
                                     onChangeText={password => this.setState({password})}
+                                    placeholder="Password"
+                                    secureTextEntry={true}
+                                    returnKeyType={'done'}
                                     errorMessage={
                                         isPasswordValid
                                             ? null
                                             : 'Please enter at least 8 characters'
                                     }
+                                    onSubmitEditing={() =>
+                                        isSignUpPage
+                                            ? this.signUp()
+                                            : this.login()
+                                    }
                                 />
-                                {isSignUpPage && (
-                                    <Input
-                                        value={passwordConfirmation}
-                                        secureTextEntry={true}
-                                        keyboardAppearance="light"
-                                        autoCapitalize="none"
-                                        autoCorrect={false}
-                                        keyboardType="default"
-                                        returnKeyType={'done'}
-                                        blurOnSubmit={true}
-                                        containerStyle={{
-                                            marginTop: 16,
-                                            borderBottomColor: 'rgba(0, 0, 0, 0.38)',
-                                        }}
-                                        inputStyle={{marginLeft: 10}}
-                                        placeholder={'Confirm password'}
-                                        ref={input => (this.confirmationInput = input)}
-                                        onSubmitEditing={this.signUp}
-                                        onChangeText={passwordConfirmation =>
-                                            this.setState({passwordConfirmation})
-                                        }
-                                        errorMessage={
-                                            isConfirmationValid
-                                                ? null
-                                                : 'Please enter the same password'
-                                        }
-                                    />
-                                )}
-                                <Button
-                                    buttonStyle={styles.loginButton}
-                                    containerStyle={{marginTop: 32, flex: 0}}
+                                <FormButton
                                     activeOpacity={0.8}
-                                    title={isLoginPage ? 'LOGIN' : 'SIGN UP'}
+                                    title={isLoginPage ? 'Sign in' : 'Sign up'}
                                     onPress={isLoginPage ? this.login : this.signUp}
-                                    titleStyle={styles.loginTextButton}
                                     loading={isLoading}
                                     disabled={isLoading}
                                 />
@@ -316,7 +245,7 @@ export default class LoginScreen extends Component {
                         <View style={styles.helpContainer}>
                             <Button
                                 title={'Need help ?'}
-                                titleStyle={{color: 'white'}}
+                                titleStyle={{color: 'black'}}
                                 buttonStyle={{backgroundColor: 'transparent'}}
                                 underlayColor="transparent"
                                 onPress={() => console.log('Account created')}
@@ -331,6 +260,79 @@ export default class LoginScreen extends Component {
     }
 }
 
+export const FormInput = props => {
+    const {refInput, otherContainerStyle, ...otherProps} = props;
+
+    return (
+        <Input
+            {...otherProps}
+            ref={refInput}
+            inputContainerStyle={[inputStyles.inputContainer, otherContainerStyle]}
+            inputStyle={inputStyles.inputStyle}
+            autoFocus={false}
+            autoCapitalize="none"
+            keyboardAppearance="light"
+            errorStyle={inputStyles.errorInputStyle}
+            autoCorrect={false}
+            blurOnSubmit={false}
+            placeholderTextColor="#A6A6A6"
+        />
+    );
+};
+
+export const FormButton = props => {
+    const {refInput, ...otherProps} = props;
+
+    return (
+        <Button
+            {...otherProps}
+            titleStyle={buttonStyles.titleStyle}
+            buttonStyle={buttonStyles.buttonStyle}
+            containerStyle={buttonStyles.buttonContainer}
+        />
+    );
+};
+
+const inputStyles = StyleSheet.create({
+    inputContainer: {
+        backgroundColor: '#F5F5F5',
+        borderRadius: 40,
+        borderWidth: 0,
+        borderColor: 'rgb(255,255,255)',
+        height: 60,
+        paddingLeft: 27,
+        paddingRight: 27,
+        paddingBottom: 5,
+        marginBottom: 20,
+        width: SCREEN_WIDTH - 94,
+    },
+    inputStyle: {
+        fontSize: 14,
+        color: '#1E1B1B'
+    },
+    errorInputStyle: {
+        marginTop: 0,
+        textAlign: 'center',
+        color: '#F44336',
+    },
+});
+
+const buttonStyles = StyleSheet.create({
+    buttonContainer: {},
+    buttonStyle: {
+
+        backgroundColor: '#28165B',
+        borderRadius: 40,
+        height: 60,
+        width: SCREEN_WIDTH - 94,
+    },
+    titleStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+    }
+});
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -342,7 +344,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     titleContainer: {
-        height: 150,
         backgroundColor: 'transparent',
         justifyContent: 'center',
     },
@@ -352,41 +353,23 @@ const styles = StyleSheet.create({
     },
     categoryText: {
         textAlign: 'center',
-        color: '#28165B',
         fontSize: 24,
-        backgroundColor: 'transparent',
-        opacity: 0.54,
+        lineHeight: 32,
+        fontWeight: 'bold',
+        color: '#1E1B1B',
+        opacity: 0.2,
     },
     selectedCategoryText: {
-        opacity: 1,
+        color: '#28165B',
+        opacity: 1
     },
     selectorContainer: {
         flex: 1,
         alignItems: 'center',
     },
     formContainer: {
-        backgroundColor: 'white',
-        width: SCREEN_WIDTH - 30,
-        borderRadius: 10,
-        paddingTop: 32,
-        paddingBottom: 32,
         alignItems: 'center',
-    },
-    loginButton: {
-        backgroundColor: '#4d2aa5',
-        borderRadius: 10,
-        height: 50,
-        width: 200,
-    },
-    loginTextButton: {
-        fontSize: 16,
-        color: 'white',
-        fontWeight: 'bold',
-    },
-    rowSelector: {
-        height: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
+        marginTop: 32
     },
     selected: {
         position: 'absolute',
