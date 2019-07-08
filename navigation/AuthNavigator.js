@@ -5,10 +5,12 @@ import {StyleSheet} from 'react-native';
 import {AppStyles} from "../constants/Colors";
 
 import LoginScreen from '../screens/LoginScreen';
+import OnBoardingScreen from "../screens/OnBoardingScreen";
 
 export default createStackNavigator(
     {
-        Login: {screen: LoginScreen}
+        Login: {screen: LoginScreen},
+        OnBoarding: {screen: OnBoardingScreen}
     },
     {
         initialRouteName: "Login",
