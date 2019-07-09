@@ -3,10 +3,11 @@ import {
     Alert,
     AsyncStorage,
     Dimensions,
-    KeyboardAvoidingView,
     LayoutAnimation,
+    SafeAreaView,
     StyleSheet,
     Text,
+    TouchableOpacity,
     View
 } from 'react-native';
 
@@ -24,7 +25,6 @@ export default class LoginScreen extends Component {
     };
 
     componentDidMount() {
-        this.setState({componentLoaded: true});
     }
 
     componentWillUnmount() {
@@ -42,8 +42,6 @@ export default class LoginScreen extends Component {
             isEmailValid: true,
             isUsernameValid: true,
             isPasswordValid: true,
-            isConfirmationValid: true,
-            componentLoaded: false
         };
 
         this.selectCategory = this.selectCategory.bind(this);
@@ -102,7 +100,7 @@ export default class LoginScreen extends Component {
     }
 
     signUp() {
-        const {email, password, passwordConfirmation, username} = this.state;
+        const {email, password, username} = this.state;
 
         LayoutAnimation.easeInEaseOut();
 
@@ -110,8 +108,6 @@ export default class LoginScreen extends Component {
             isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
             isPasswordValid: password.length >= 8 || this.passwordInput.shake(),
             isUsernameValid: username.length >= 5 || this.usernameInput.shake(),
-            isConfirmationValid:
-                password === passwordConfirmation || this.confirmationInput.shake(),
         });
 
         if (this.validateEmail(email) && password.length >= 8 && username.length >= 5) {
@@ -135,127 +131,129 @@ export default class LoginScreen extends Component {
             isLoading,
             isEmailValid,
             isPasswordValid,
-            isConfirmationValid,
             isUsernameValid,
             email,
             password,
-            passwordConfirmation,
             username,
         } = this.state;
         const isLoginPage = selectedCategory === 0;
         const isSignUpPage = selectedCategory === 1;
 
         return (
-            <View style={styles.container}>
-                {this.state.componentLoaded ? (
-                    <View>
-                        <KeyboardAvoidingView
-                            contentContainerStyle={styles.loginContainer}
-                            behavior="position"
-                        >
-                            <View style={styles.titleContainer}>
-                                <View>
-                                    <Text style={styles.titleText}>Housework</Text>
-                                </View>
-                            </View>
-                            <View style={{flexDirection: 'row'}}>
-                                <Button
-                                    disabled={isLoading}
-                                    type="clear"
-                                    activeOpacity={0.7}
-                                    onPress={() => this.selectCategory(0)}
-                                    containerStyle={{marginRight: 5}}
-                                    titleStyle={[
-                                        styles.categoryText,
-                                        isLoginPage && styles.selectedCategoryText,
-                                    ]}
-                                    title={'Sign in'}
-                                />
-                                <Button
-                                    disabled={isLoading}
-                                    type="clear"
-                                    activeOpacity={0.7}
-                                    onPress={() => this.selectCategory(1)}
-                                    containerStyle={{marginLeft: 5}}
-                                    titleStyle={[
-                                        styles.categoryText,
-                                        isSignUpPage && styles.selectedCategoryText,
-                                    ]}
-                                    title={'Sign up'}
-                                />
-                            </View>
-                            <View style={styles.formContainer}>
-                                {isSignUpPage && (
-                                    <FormInput
-                                        value={username}
-                                        refInput={input => (this.usernameInput = input)}
-                                        onChangeText={username => this.setState({username})}
-                                        placeholder="Name"
-                                        keyboardType="default"
-                                        returnKeyType="next"
-                                        errorMessage={
-                                            isUsernameValid ? null : 'Please enter at least 5 characters'
-                                        }
-                                        onSubmitEditing={() => this.emailInput.focus()}
-                                    />
-                                )}
-                                <FormInput
-                                    refInput={input => (this.emailInput = input)}
-                                    value={email}
-                                    onChangeText={email => this.setState({email})}
-                                    placeholder="Email"
-                                    keyboardType="email-address"
-                                    returnKeyType="next"
-                                    errorMessage={
-                                        isEmailValid ? null : 'Please enter a valid email address'
-                                    }
-                                    onSubmitEditing={() => {
-                                        this.validateEmail();
-                                        this.passwordInput.focus();
-                                    }}
-                                />
-                                <FormInput
-                                    refInput={input => (this.passwordInput = input)}
-                                    value={password}
-                                    otherContainerStyle={{marginBottom: 40}}
-                                    onChangeText={password => this.setState({password})}
-                                    placeholder="Password"
-                                    secureTextEntry={true}
-                                    returnKeyType={'done'}
-                                    errorMessage={
-                                        isPasswordValid
-                                            ? null
-                                            : 'Please enter at least 8 characters'
-                                    }
-                                    onSubmitEditing={() =>
-                                        isSignUpPage
-                                            ? this.signUp()
-                                            : this.login()
-                                    }
-                                />
-                                <FormButton
-                                    activeOpacity={0.8}
-                                    title={isLoginPage ? 'Sign in' : 'Sign up'}
-                                    onPress={isLoginPage ? this.login : this.signUp}
-                                    loading={isLoading}
-                                    disabled={isLoading}
-                                />
-                            </View>
-                        </KeyboardAvoidingView>
-                        <View style={styles.helpContainer}>
-                            <Button
-                                title={'Need help ?'}
-                                titleStyle={{color: 'black'}}
-                                buttonStyle={{backgroundColor: 'transparent'}}
-                                underlayColor="transparent"
-                                onPress={() => console.log('Account created')}
-                            />
-                        </View>
+            <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+                <View style={styles.container}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={{
+                            height: 60,
+                            width: 60,
+                            backgroundColor: '#F5F5F5',
+                            borderRadius: 50,
+                            marginBottom: 60,
+                            marginTop: 40,
+                        }}>
+                    </TouchableOpacity>
+                    <View style={{flexDirection: 'row'}}>
+                        <Button
+                            disabled={isLoading}
+                            type='clear'
+                            activeOpacity={0.7}
+                            onPress={() => this.selectCategory(0)}
+                            containerStyle={{marginRight: 5}}
+                            titleStyle={[
+                                styles.categoryText,
+                                isLoginPage && styles.selectedCategoryText,
+                            ]}
+                            title={'Sign in'}
+                        />
+                        <Button
+                            disabled={isLoading}
+                            type='clear'
+                            activeOpacity={0.7}
+                            onPress={() => this.selectCategory(1)}
+                            containerStyle={{marginLeft: 5}}
+                            titleStyle={[
+                                styles.categoryText,
+                                isSignUpPage && styles.selectedCategoryText,
+                            ]}
+                            title={'Sign up'}
+                        />
                     </View>
-                ) : (
-                    <Text>Loading...</Text>
-                )}
-            </View>
+                    <View style={styles.formContainer}>
+                        {isSignUpPage && (
+                            <FormInput
+                                value={username}
+                                refInput={input => (this.usernameInput = input)}
+                                onChangeText={username => this.setState({username})}
+                                placeholder='Name'
+                                keyboardType='default'
+                                returnKeyType='next'
+                                errorMessage={
+                                    isUsernameValid ? null : 'Please enter at least 5 characters'
+                                }
+                                onSubmitEditing={() => this.emailInput.focus()}
+                            />
+                        )}
+                        <FormInput
+                            refInput={input => (this.emailInput = input)}
+                            value={email}
+                            otherContainerStyle={!isSignUpPage || ({marginTop: 20})}
+                            onChangeText={email => this.setState({email})}
+                            placeholder='Email'
+                            keyboardType='email-address'
+                            returnKeyType='next'
+                            errorMessage={
+                                isEmailValid ? null : 'Please enter a valid email address'
+                            }
+                            onSubmitEditing={() => {
+                                this.validateEmail();
+                                this.passwordInput.focus();
+                            }}
+                        />
+                        <FormInput
+                            refInput={input => (this.passwordInput = input)}
+                            value={password}
+                            otherContainerStyle={{marginTop: 20}}
+                            onChangeText={password => this.setState({password})}
+                            placeholder='Password'
+                            secureTextEntry={true}
+                            returnKeyType={'done'}
+                            errorMessage={
+                                isPasswordValid
+                                    ? null
+                                    : 'Please enter at least 8 characters'
+                            }
+                            onSubmitEditing={() =>
+                                isSignUpPage
+                                    ? this.signUp()
+                                    : this.login()
+                            }
+                        />
+                        <FormButton
+                            activeOpacity={0.8}
+                            title={isLoginPage ? 'Sign in' : 'Sign up'}
+                            otherButtonContainer={{marginTop: 40}}
+                            onPress={isLoginPage ? this.login : this.signUp}
+                            loading={isLoading}
+                            disabled={isLoading}
+                        />
+                    </View>
+                    {
+                        isSignUpPage || (
+                            <View style={styles.helpContainer}>
+                                <Text style={{fontSize: 12, fontFamily: 'open-sans'}}>Troubles with sign in? </Text>
+                                <TouchableOpacity>
+                                    <Text
+                                        style={{fontSize: 12, textDecorationLine: 'underline', fontFamily: 'open-sans'}}
+                                    >
+                                        Reset your password.
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    }
+                </View>
+            </SafeAreaView>
         );
     }
 }
@@ -270,25 +268,25 @@ export const FormInput = props => {
             inputContainerStyle={[inputStyles.inputContainer, otherContainerStyle]}
             inputStyle={inputStyles.inputStyle}
             autoFocus={false}
-            autoCapitalize="none"
-            keyboardAppearance="light"
+            autoCapitalize='none'
+            keyboardAppearance='light'
             errorStyle={inputStyles.errorInputStyle}
             autoCorrect={false}
             blurOnSubmit={false}
-            placeholderTextColor="#A6A6A6"
+            placeholderTextColor='#A6A6A6'
         />
     );
 };
 
 export const FormButton = props => {
-    const {refInput, ...otherProps} = props;
+    const {refInput, otherTitleStyle, otherButtonStyles, otherButtonContainer, ...otherProps} = props;
 
     return (
         <Button
+            titleStyle={[buttonStyles.titleStyle, otherTitleStyle]}
+            buttonStyle={[buttonStyles.buttonStyle, otherButtonStyles]}
+            containerStyle={[buttonStyles.buttonContainer, otherButtonContainer]}
             {...otherProps}
-            titleStyle={buttonStyles.titleStyle}
-            buttonStyle={buttonStyles.buttonStyle}
-            containerStyle={buttonStyles.buttonContainer}
         />
     );
 };
@@ -303,15 +301,14 @@ const inputStyles = StyleSheet.create({
         paddingLeft: 27,
         paddingRight: 27,
         paddingBottom: 5,
-        marginBottom: 20,
-        width: SCREEN_WIDTH - 94,
+        width: SCREEN_WIDTH - 97
     },
     inputStyle: {
         fontSize: 14,
+        fontFamily: 'open-sans',
         color: '#1E1B1B'
     },
     errorInputStyle: {
-        marginTop: 0,
         textAlign: 'center',
         color: '#F44336',
     },
@@ -320,15 +317,15 @@ const inputStyles = StyleSheet.create({
 const buttonStyles = StyleSheet.create({
     buttonContainer: {},
     buttonStyle: {
-
         backgroundColor: '#28165B',
         borderRadius: 40,
         height: 60,
-        width: SCREEN_WIDTH - 94,
+        width: SCREEN_WIDTH - 97,
     },
     titleStyle: {
         color: 'white',
         fontWeight: 'bold',
+        fontFamily: 'open-sans-bold'
     }
 });
 
@@ -336,15 +333,12 @@ const buttonStyles = StyleSheet.create({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
+        position: 'relative',
+        backgroundColor: '#FFFFFF',
     },
     loginContainer: {
         alignItems: 'center',
-        justifyContent: 'center',
-    },
-    titleContainer: {
-        backgroundColor: 'transparent',
         justifyContent: 'center',
     },
     titleText: {
@@ -358,6 +352,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#1E1B1B',
         opacity: 0.2,
+        fontFamily: 'open-sans-bold'
     },
     selectedCategoryText: {
         color: '#28165B',
@@ -386,8 +381,11 @@ const styles = StyleSheet.create({
         opacity: 0.5
     },
     helpContainer: {
-        height: 64,
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        position: 'absolute',
+        bottom: 0,
+        height: 64,
     }
 });
