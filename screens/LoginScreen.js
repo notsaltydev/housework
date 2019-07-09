@@ -125,6 +125,10 @@ export default class LoginScreen extends Component {
         }
     }
 
+    resetPassword() {
+        this.props.navigation.navigate('ResetPassword')
+    }
+
     render() {
         const {
             selectedCategory,
@@ -242,7 +246,9 @@ export default class LoginScreen extends Component {
                         isSignUpPage || (
                             <View style={styles.helpContainer}>
                                 <Text style={{fontSize: 12, fontFamily: 'open-sans'}}>Troubles with sign in? </Text>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => this.resetPassword()}
+                                >
                                     <Text
                                         style={{fontSize: 12, textDecorationLine: 'underline', fontFamily: 'open-sans'}}
                                     >
@@ -258,7 +264,7 @@ export default class LoginScreen extends Component {
     }
 }
 
-export const FormInput = props => {
+const FormInput = props => {
     const {refInput, otherContainerStyle, ...otherProps} = props;
 
     return (
@@ -278,7 +284,7 @@ export const FormInput = props => {
     );
 };
 
-export const FormButton = props => {
+const FormButton = props => {
     const {refInput, otherTitleStyle, otherButtonStyles, otherButtonContainer, ...otherProps} = props;
 
     return (

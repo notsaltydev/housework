@@ -6,10 +6,12 @@ import {AppStyles} from "../constants/Colors";
 
 import LoginScreen from '../screens/LoginScreen';
 import OnBoardingScreen from "../screens/OnBoardingScreen";
+import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 
 export default createStackNavigator(
     {
         Login: {screen: LoginScreen},
+        ResetPassword: {screen: ResetPasswordScreen},
         OnBoarding: {screen: OnBoardingScreen}
     },
     {
