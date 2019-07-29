@@ -22,7 +22,7 @@ export default class AuthLoadingScreen extends Component {
 
                 return this.props.navigation.navigate('MainStack');
             }
-            return this.props.navigation.navigate('SetupGroupStack');
+            return this.props.navigation.navigate('OnBoardingStack');
         } else {
             return this.props.navigation.navigate('AuthStack');
         }

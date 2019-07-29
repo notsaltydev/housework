@@ -3,8 +3,8 @@ import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 
 import AuthNavigator from './AuthNavigator';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen.js';
-import SetupGroupScreen from "../screens/SetupGroupScreen";
 import {Stack} from "./DrawerNavigator";
+import {OnBoardingStack} from "./OnBoardingNavigator";
 
 export default createAppContainer(
     createSwitchNavigator({
@@ -12,7 +12,7 @@ export default createAppContainer(
             // Read more at https://reactnavigation.org/docs/en/auth-flow.html
             AuthLoading: AuthLoadingScreen,
             AuthStack: AuthNavigator,
-            SetupGroupStack: SetupGroupScreen,
+            OnBoardingStack: OnBoardingStack,
             MainStack: Stack
         },
         {
