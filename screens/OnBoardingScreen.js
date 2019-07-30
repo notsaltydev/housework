@@ -4,6 +4,10 @@ import Swiper from 'react-native-swiper'
 import {FormButton} from "../components/FormButton";
 import {WateringPotPrefix, WateringPotSuffix} from "../components/svg/WateringPot";
 import {VacuumPrefix, VacuumSuffix} from "../components/svg/Vacuum";
+import {ChecklistPrefix, ChecklistSuffix} from "../components/svg/Checklist";
+import {FlowerPrefix, FlowerSuffix} from "../components/svg/Flower";
+import {GamePrefix, GameSuffix} from "../components/svg/Game";
+import {TicketPrefix, TicketSuffix} from "../components/svg/Ticket";
 
 export default class OnBoardingScreen extends Component {
     static navigationOptions = {
@@ -44,12 +48,6 @@ export default class OnBoardingScreen extends Component {
                             onPress={() => this.skip()}>
                             <Text style={styles.skip}>SKIP</Text>
                         </TouchableOpacity>
-                        <WateringPotPrefix
-                            containerStyles={{position: 'absolute', top: 40, right: 0}}
-                        />
-                        <VacuumPrefix
-                            containerStyles={{position: 'absolute', bottom: 128, right: 0}}
-                        />
                         <Text style={[styles.title, styles.text]}>
                             Can you please... do me a favour?
                         </Text>
@@ -63,6 +61,8 @@ export default class OnBoardingScreen extends Component {
                             otherButtonContainer={{position: 'absolute', bottom: 40}}
                             onPress={() => this.next(this.swiper, screen)}
                         />
+                        <WateringPotPrefix containerStyles={{position: 'absolute', top: 40, right: 0}}/>
+                        <VacuumPrefix containerStyles={{position: 'absolute', bottom: 128, right: 0}}/>
                     </View>
                     <View style={styles.slide}>
                         <TouchableOpacity
@@ -70,12 +70,6 @@ export default class OnBoardingScreen extends Component {
                             onPress={() => this.skip()}>
                             <Text style={styles.skip}>SKIP</Text>
                         </TouchableOpacity>
-                        <WateringPotSuffix
-                            containerStyles={{position: 'absolute', top: 40, left: 0}}
-                        />
-                        <VacuumSuffix
-                            containerStyles={{position: 'absolute', bottom: 128, left: 0}}
-                        />
                         <Text style={[styles.title, styles.text]}>Give tasks & motivate kids</Text>
                         <Text style={[styles.message, styles.text]}>
                             Create your own family board, add some tasks and motivate kids to do them by setting
@@ -87,6 +81,10 @@ export default class OnBoardingScreen extends Component {
                             otherButtonContainer={{position: 'absolute', bottom: 40}}
                             onPress={() => this.next(this.swiper, screen)}
                         />
+                        <WateringPotSuffix containerStyles={{position: 'absolute', top: 40, left: 0}}/>
+                        <VacuumSuffix containerStyles={{position: 'absolute', bottom: 128, left: 0}}/>
+                        <ChecklistPrefix containerStyles={{position: 'absolute', top: 70, right: 0}}/>
+                        <FlowerPrefix containerStyles={{position: 'absolute', bottom: 100, right: 0}}/>
                     </View>
                     <View style={styles.slide}>
                         <TouchableOpacity
@@ -107,6 +105,10 @@ export default class OnBoardingScreen extends Component {
                             otherButtonContainer={{position: 'absolute', bottom: 40}}
                             onPress={() => this.next(this.swiper, screen)}
                         />
+                        <ChecklistSuffix containerStyles={{position: 'absolute', top: 70, left: 0}}/>
+                        <FlowerSuffix containerStyles={{position: 'absolute', bottom: 100, left: 0}}/>
+                        <GamePrefix containerStyles={{position: 'absolute', top: 60, right: 0}}/>
+                        <TicketPrefix containerStyles={{position: 'absolute', bottom: 100, right: 0}}/>
                     </View>
                     <View style={styles.slide}>
                         <Text style={[styles.title, styles.text]}>
@@ -116,6 +118,8 @@ export default class OnBoardingScreen extends Component {
                             Hey kid, be neat, do the task, collect the points and exchange them for some cool rewards
                             established by your parents in the app market!
                         </Text>
+                        <GameSuffix containerStyles={{position: 'absolute', top: 60, left: 0}}/>
+                        <TicketSuffix containerStyles={{position: 'absolute', bottom: 100, left: 0}}/>
                     </View>
                 </Swiper>
             </SafeAreaView>
@@ -128,7 +132,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#E5E5E5',
         position: 'relative'
     },
     title: {
