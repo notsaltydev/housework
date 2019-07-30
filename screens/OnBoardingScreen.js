@@ -110,13 +110,33 @@ export default class OnBoardingScreen extends Component {
                         <GamePrefix containerStyles={{position: 'absolute', top: 60, right: 0}}/>
                         <TicketPrefix containerStyles={{position: 'absolute', bottom: 100, right: 0}}/>
                     </View>
-                    <View style={styles.slide}>
+                    <View style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        paddingTop: 75
+                    }}>
                         <Text style={[styles.title, styles.text]}>
                             Ready to do some favours?
                         </Text>
-                        <Text style={[styles.message, styles.text]}>
-                            Hey kid, be neat, do the task, collect the points and exchange them for some cool rewards
-                            established by your parents in the app market!
+                        <Text style={[styles.message, styles.text, {paddingTop: 30, paddingBottom: 30}]}>
+                            To join already existing board,  ask its admin for a unique code...
+                        </Text>
+                        <FormButton
+                            activeOpacity={0.8}
+                            title={'Join group'}
+                            onPress={() => {}}
+                        />
+                        <Text style={[styles.message, styles.text, {paddingTop: 40, paddingBottom: 30}]}>
+                            ...or as a parent, create a new one!*
+                        </Text>
+                        <FormButton
+                            activeOpacity={0.8}
+                            title={'Create a new board'}
+                            onPress={() => {}}
+                        />
+
+                        <Text style={[styles.text, {position: 'absolute', bottom: 40, fontSize: 12, maxWidth: 280}]}>
+                            Are you a kid? We recommend to ask your parents to sign up and create the board!
                         </Text>
                         <GameSuffix containerStyles={{position: 'absolute', top: 60, left: 0}}/>
                         <TicketSuffix containerStyles={{position: 'absolute', bottom: 100, left: 0}}/>
