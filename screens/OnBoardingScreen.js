@@ -14,6 +14,13 @@ export default class OnBoardingScreen extends Component {
         header: null
     };
 
+    static getDerivedStateFromProps(props, state) {
+        if (props.navigation.state.params) {
+            // return {...state, screen: props.navigation.state.params.onBoardingSlideIndex}
+        }
+        return state;
+    }
+
     constructor(props) {
         super(props);
 
@@ -28,6 +35,14 @@ export default class OnBoardingScreen extends Component {
 
     skip() {
         console.log('skip');
+    }
+
+    navigateToJoinGroup() {
+        this.props.navigation.navigate('JoinGroup');
+    }
+
+    navigateToCreateGroup() {
+        this.props.navigation.navigate('CreateGroup');
     }
 
     render() {
@@ -119,12 +134,12 @@ export default class OnBoardingScreen extends Component {
                             Ready to do some favours?
                         </Text>
                         <Text style={[styles.message, styles.text, {paddingTop: 30, paddingBottom: 30}]}>
-                            To join already existing board,  ask its admin for a unique code...
+                            To join already existing board, ask its admin for a unique code...
                         </Text>
                         <FormButton
                             activeOpacity={0.8}
                             title={'Join group'}
-                            onPress={() => {}}
+                            onPress={() => this.navigateToJoinGroup()}
                         />
                         <Text style={[styles.message, styles.text, {paddingTop: 40, paddingBottom: 30}]}>
                             ...or as a parent, create a new one!*
@@ -132,7 +147,7 @@ export default class OnBoardingScreen extends Component {
                         <FormButton
                             activeOpacity={0.8}
                             title={'Create a new board'}
-                            onPress={() => {}}
+                            onPress={() => this.navigateToCreateGroup()}
                         />
 
                         <Text style={[styles.text, {position: 'absolute', bottom: 40, fontSize: 12, maxWidth: 280}]}>
@@ -152,7 +167,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#E5E5E5',
         position: 'relative'
     },
     title: {

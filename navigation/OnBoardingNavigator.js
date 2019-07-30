@@ -1,11 +1,13 @@
 import React from 'react';
 import {createStackNavigator} from 'react-navigation';
-import SetupGroupScreen from "../screens/SetupGroupScreen";
+import CreateGroupScreen from "../screens/CreateGroupScreen";
 import OnBoardingScreen from "../screens/OnBoardingScreen";
+import JoinGroupScreen from "../screens/JoinGroupScreen";
 
 export const OnBoardingStack = createStackNavigator({
         OnBoarding: OnBoardingScreen,
-        SetupGroup: SetupGroupScreen
+        JoinGroup: JoinGroupScreen,
+        CreateGroup: CreateGroupScreen
     },
     {
         initialRouteName: 'OnBoarding',
