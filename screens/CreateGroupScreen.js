@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+    Alert,
     AsyncStorage,
     Dimensions,
     Keyboard,
@@ -8,20 +9,15 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    TouchableWithoutFeedback,
     View
 } from 'react-native';
 import {FontAwesome5} from "@expo/vector-icons";
 import {FormInput} from "../components/FormInput";
 import {FormButton} from "../components/FormButton";
+import {DismissKeyboard} from "../components/DismissKeyboard";
+import {GroupService} from "../services/GroupService";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-
-const DismissKeyboard = ({children}) => (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        {children}
-    </TouchableWithoutFeedback>
-);
 
 export default class CreateGroupScreen extends Component {
     static navigationOptions = {
@@ -37,18 +33,18 @@ export default class CreateGroupScreen extends Component {
             isLoading: false
         };
 
-        this.joinToGroup.bind(this);
+        this.createGroup.bind(this);
     }
 
     componentDidUpdate() {
-        console.log(this.props.navigation);
+        // console.log(this.props.navigation);
     }
 
-    joinToGroup = async () => {
+    createGroup = async () => {
         const {groupName} = this.state;
-        const token = await AsyncStorage.getItem('userToken');
 
         LayoutAnimation.easeInEaseOut();
+        Keyboard.dismiss();
 
         this.setState({
             isGroupNameValid: groupName.length >= 5 || this.groupNameInput.shake(),
@@ -57,29 +53,19 @@ export default class CreateGroupScreen extends Component {
         if (groupName.length >= 5) {
             this.setState({isLoading: true});
 
-            // axios.post(
-            //     'https://housework-management.herokuapp.com/api/group',
-            //     {
-            //         name: groupName,
-            //     },
-            //     {
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //             'Authorization': `Bearer ${token}`
-            //         }
-            //     })
-            //     .then(async (response) => {
-            //         this.setState({isLoading: false});
-            //         await AsyncStorage.setItem('defaultGroupId', response.data.id);
-            //
-            //         this.props.navigation.navigate('MainStack');
-            //     })
-            //     .catch(error => {
-            //         this.setState({isLoading: false});
-            //         console.log('error', error);
-            //         Alert.alert(`Error: ${error.code || ''} 🔥`, error.message || error);
-            //         return Promise.reject(error)
-            //     });
+            GroupService.createGroup({
+                name: groupName,
+            }).then(async (response) => {
+                this.setState({isLoading: false});
+                await AsyncStorage.setItem('defaultGroupId', response.data.id);
+
+                this.props.navigation.navigate('MainStack');
+            }).catch(error => {
+                this.setState({isLoading: false});
+                console.log('error', error);
+                Alert.alert(`Error: ${error.code || ''} 🔥`, error.message || error);
+                return Promise.reject(error)
+            });
         }
     };
 
@@ -118,20 +104,19 @@ export default class CreateGroupScreen extends Component {
                                 otherContainerStyle={{marginTop: 30}}
                                 onChangeText={groupName => this.setState({groupName})}
                                 placeholder='Board name...'
-                                secureTextEntry={true}
                                 returnKeyType={'next'}
                                 errorMessage={
                                     isGroupNameValid
                                         ? null
                                         : 'Please enter at least 8 characters'
                                 }
-                                onSubmitEditing={() => this.joinToGroup()}
+                                onSubmitEditing={() => this.createGroup()}
                             />
                             <FormButton
                                 activeOpacity={0.8}
                                 title={'Create the board'}
                                 otherButtonContainer={{marginTop: 30}}
-                                onPress={() => this.joinToGroup()}
+                                onPress={() => this.createGroup()}
                                 loading={isLoading}
                                 disabled={isLoading}
                             />
@@ -164,7 +149,6 @@ export default class CreateGroupScreen extends Component {
             </SafeAreaView>
         );
     }
-
 }
 
 

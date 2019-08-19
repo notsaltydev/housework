@@ -18,6 +18,7 @@ import {SignupService} from '../services/SignupService';
 import {HttpClientService} from "../services/HttpClientService";
 import {FormButton} from "../components/FormButton";
 import {FormInput} from "../components/FormInput";
+import {DismissKeyboard} from "../components/DismissKeyboard";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -147,120 +148,126 @@ export default class LoginScreen extends Component {
 
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-                <View style={styles.container}>
-                    <TouchableOpacity
-                        activeOpacity={0.7}
-                        style={{
-                            height: 60,
-                            width: 60,
-                            backgroundColor: '#F5F5F5',
-                            borderRadius: 50,
-                            marginBottom: 60,
-                            marginTop: 40,
-                        }}>
-                    </TouchableOpacity>
-                    <View style={{flexDirection: 'row'}}>
-                        <Button
-                            disabled={isLoading}
-                            type='clear'
+                <DismissKeyboard>
+                    <View style={styles.container}>
+                        <TouchableOpacity
                             activeOpacity={0.7}
-                            onPress={() => this.selectCategory(0)}
-                            containerStyle={{marginRight: 5}}
-                            titleStyle={[
-                                styles.categoryText,
-                                isLoginPage && styles.selectedCategoryText,
-                            ]}
-                            title={'Sign in'}
-                        />
-                        <Button
-                            disabled={isLoading}
-                            type='clear'
-                            activeOpacity={0.7}
-                            onPress={() => this.selectCategory(1)}
-                            containerStyle={{marginLeft: 5}}
-                            titleStyle={[
-                                styles.categoryText,
-                                isSignUpPage && styles.selectedCategoryText,
-                            ]}
-                            title={'Sign up'}
-                        />
-                    </View>
-                    <View style={styles.formContainer}>
-                        {isSignUpPage && (
+                            style={{
+                                height: 60,
+                                width: 60,
+                                backgroundColor: '#F5F5F5',
+                                borderRadius: 50,
+                                marginBottom: 60,
+                                marginTop: 40,
+                            }}>
+                        </TouchableOpacity>
+                        <View style={{flexDirection: 'row'}}>
+                            <Button
+                                disabled={isLoading}
+                                type='clear'
+                                activeOpacity={0.7}
+                                onPress={() => this.selectCategory(0)}
+                                containerStyle={{marginRight: 5}}
+                                titleStyle={[
+                                    styles.categoryText,
+                                    isLoginPage && styles.selectedCategoryText,
+                                ]}
+                                title={'Sign in'}
+                            />
+                            <Button
+                                disabled={isLoading}
+                                type='clear'
+                                activeOpacity={0.7}
+                                onPress={() => this.selectCategory(1)}
+                                containerStyle={{marginLeft: 5}}
+                                titleStyle={[
+                                    styles.categoryText,
+                                    isSignUpPage && styles.selectedCategoryText,
+                                ]}
+                                title={'Sign up'}
+                            />
+                        </View>
+                        <View style={styles.formContainer}>
+                            {isSignUpPage && (
+                                <FormInput
+                                    value={username}
+                                    refInput={input => (this.usernameInput = input)}
+                                    onChangeText={username => this.setState({username})}
+                                    placeholder='Name'
+                                    keyboardType='default'
+                                    returnKeyType='next'
+                                    errorMessage={
+                                        isUsernameValid ? null : 'Please enter at least 5 characters'
+                                    }
+                                    onSubmitEditing={() => this.emailInput.focus()}
+                                />
+                            )}
                             <FormInput
-                                value={username}
-                                refInput={input => (this.usernameInput = input)}
-                                onChangeText={username => this.setState({username})}
-                                placeholder='Name'
-                                keyboardType='default'
+                                refInput={input => (this.emailInput = input)}
+                                value={email}
+                                otherContainerStyle={!isSignUpPage || ({marginTop: 20})}
+                                onChangeText={email => this.setState({email})}
+                                placeholder='Email'
+                                keyboardType='email-address'
                                 returnKeyType='next'
                                 errorMessage={
-                                    isUsernameValid ? null : 'Please enter at least 5 characters'
+                                    isEmailValid ? null : 'Please enter a valid email address'
                                 }
-                                onSubmitEditing={() => this.emailInput.focus()}
+                                onSubmitEditing={() => {
+                                    this.validateEmail();
+                                    this.passwordInput.focus();
+                                }}
                             />
-                        )}
-                        <FormInput
-                            refInput={input => (this.emailInput = input)}
-                            value={email}
-                            otherContainerStyle={!isSignUpPage || ({marginTop: 20})}
-                            onChangeText={email => this.setState({email})}
-                            placeholder='Email'
-                            keyboardType='email-address'
-                            returnKeyType='next'
-                            errorMessage={
-                                isEmailValid ? null : 'Please enter a valid email address'
-                            }
-                            onSubmitEditing={() => {
-                                this.validateEmail();
-                                this.passwordInput.focus();
-                            }}
-                        />
-                        <FormInput
-                            refInput={input => (this.passwordInput = input)}
-                            value={password}
-                            otherContainerStyle={{marginTop: 20}}
-                            onChangeText={password => this.setState({password})}
-                            placeholder='Password'
-                            secureTextEntry={true}
-                            returnKeyType={'done'}
-                            errorMessage={
-                                isPasswordValid
-                                    ? null
-                                    : 'Please enter at least 8 characters'
-                            }
-                            onSubmitEditing={() =>
-                                isSignUpPage
-                                    ? this.signUp()
-                                    : this.login()
-                            }
-                        />
-                        <FormButton
-                            activeOpacity={0.8}
-                            title={isLoginPage ? 'Sign in' : 'Sign up'}
-                            otherButtonContainer={{marginTop: 40}}
-                            onPress={isLoginPage ? this.login : this.signUp}
-                            loading={isLoading}
-                            disabled={isLoading}
-                        />
-                    </View>
-                    {
-                        isSignUpPage || (
-                            <View style={styles.helpContainer}>
-                                <Text style={{fontSize: 12, fontFamily: 'open-sans'}}>Troubles with sign in? </Text>
-                                <TouchableOpacity
-                                    onPress={() => this.resetPassword()}
-                                >
-                                    <Text
-                                        style={{fontSize: 12, textDecorationLine: 'underline', fontFamily: 'open-sans'}}
+                            <FormInput
+                                refInput={input => (this.passwordInput = input)}
+                                value={password}
+                                otherContainerStyle={{marginTop: 20}}
+                                onChangeText={password => this.setState({password})}
+                                placeholder='Password'
+                                secureTextEntry={true}
+                                returnKeyType={'done'}
+                                errorMessage={
+                                    isPasswordValid
+                                        ? null
+                                        : 'Please enter at least 8 characters'
+                                }
+                                onSubmitEditing={() =>
+                                    isSignUpPage
+                                        ? this.signUp()
+                                        : this.login()
+                                }
+                            />
+                            <FormButton
+                                activeOpacity={0.8}
+                                title={isLoginPage ? 'Sign in' : 'Sign up'}
+                                otherButtonContainer={{marginTop: 40}}
+                                onPress={isLoginPage ? this.login : this.signUp}
+                                loading={isLoading}
+                                disabled={isLoading}
+                            />
+                        </View>
+                        {
+                            isSignUpPage || (
+                                <View style={styles.helpContainer}>
+                                    <Text style={{fontSize: 12, fontFamily: 'open-sans'}}>Troubles with sign in? </Text>
+                                    <TouchableOpacity
+                                        onPress={() => this.resetPassword()}
                                     >
-                                        Reset your password.
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        )
-                    }
-                </View>
+                                        <Text
+                                            style={{
+                                                fontSize: 12,
+                                                textDecorationLine: 'underline',
+                                                fontFamily: 'open-sans'
+                                            }}
+                                        >
+                                            Reset your password.
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )
+                        }
+                    </View>
+                </DismissKeyboard>
             </SafeAreaView>
         );
     }

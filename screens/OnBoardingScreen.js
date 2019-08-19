@@ -34,7 +34,7 @@ export default class OnBoardingScreen extends Component {
     }
 
     skip() {
-        console.log('skip');
+        this.next(this.swiper, 3)
     }
 
     navigateToJoinGroup() {

@@ -9,11 +9,13 @@ import {
     Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    View
+    View,
+    Alert
 } from 'react-native';
 import {FontAwesome5} from "@expo/vector-icons";
 import {FormInput} from "../components/FormInput";
 import {FormButton} from "../components/FormButton";
+import {GroupService} from "../services/GroupService";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -42,9 +44,9 @@ export default class JoinGroupScreen extends Component {
 
     joinToGroup = async () => {
         const {groupName} = this.state;
-        const token = await AsyncStorage.getItem('userToken');
 
         LayoutAnimation.easeInEaseOut();
+        Keyboard.dismiss();
 
         this.setState({
             isGroupNameValid: groupName.length >= 5 || this.groupNameInput.shake(),
@@ -53,29 +55,18 @@ export default class JoinGroupScreen extends Component {
         if (groupName.length >= 5) {
             this.setState({isLoading: true});
 
-            // axios.post(
-            //     'https://housework-management.herokuapp.com/api/group',
-            //     {
-            //         name: groupName,
-            //     },
-            //     {
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //             'Authorization': `Bearer ${token}`
-            //         }
-            //     })
-            //     .then(async (response) => {
-            //         this.setState({isLoading: false});
-            //         await AsyncStorage.setItem('defaultGroupId', response.data.id);
-            //
-            //         this.props.navigation.navigate('MainStack');
-            //     })
-            //     .catch(error => {
-            //         this.setState({isLoading: false});
-            //         console.log('error', error);
-            //         Alert.alert(`Error: ${error.code || ''} 🔥`, error.message || error);
-            //         return Promise.reject(error)
-            //     });
+            GroupService.joinToGroup({
+                "accessCode": groupName
+            }).then(async (response) => {
+                this.setState({isLoading: false});
+                await AsyncStorage.setItem('defaultGroupId', response.data.id);
+                this.props.navigation.navigate('MainStack');
+            }).catch(error => {
+                this.setState({isLoading: false});
+                console.log('error', error);
+                Alert.alert(`Error: ${error.code || ''} 🔥`, error.message || error);
+                return Promise.reject(error)
+            });
         }
     };
 
@@ -112,14 +103,13 @@ export default class JoinGroupScreen extends Component {
                                 refInput={input => (this.groupNameInput = input)}
                                 value={groupName}
                                 otherContainerStyle={{marginTop: 30}}
-                                onChangeText={groupName => this.setState({groupName})}
+                                onChangeText={groupName => this.setState({groupName: groupName.toUpperCase()})}
                                 placeholder='Type code...'
-                                secureTextEntry={true}
                                 returnKeyType={'next'}
                                 errorMessage={
                                     isGroupNameValid
                                         ? null
-                                        : 'Please enter at least 8 characters'
+                                        : 'Please enter at least 5 characters'
                                 }
                                 onSubmitEditing={() => this.joinToGroup()}
                             />
