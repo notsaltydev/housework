@@ -5,14 +5,14 @@ import {Dimensions, StyleSheet} from "react-native";
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export const FormInput = props => {
-    const {refInput, otherContainerStyle, ...otherProps} = props;
+    const {refInput, otherContainerStyle, otherInputStyle, ...otherProps} = props;
 
     return (
         <Input
             {...otherProps}
             ref={refInput}
             inputContainerStyle={[inputStyles.inputContainer, otherContainerStyle]}
-            inputStyle={inputStyles.inputStyle}
+            inputStyle={[inputStyles.inputStyle, otherInputStyle]}
             autoFocus={false}
             autoCapitalize='none'
             keyboardAppearance='light'
