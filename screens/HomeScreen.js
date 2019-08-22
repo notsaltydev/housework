@@ -32,32 +32,16 @@ export default class HomeScreen extends Component {
         console.log('constructor');
     }
 
-    componentWillMount() {
-        console.log('componentWillMount');
-    }
-
-    componentDidCatch() {
-        console.log('componentDidCatch');
-    }
-
-    componentDidUpdate() {
-        console.log('componentDidUpdate');
-    }
-
-    componentWillReceiveProps() {
-        console.log('componentWillReceiveProps');
+    componentDidMount() {
+        this.subs = [
+            this.props.navigation.addListener('willFocus', async () => {
+                await this.getUser();
+            }),
+        ];
     }
 
     componentWillUnmount() {
-        console.log('componentWillUnmount');
-    }
-
-    componentWillUpdate() {
-        console.log('componentWillUpdate');
-    }
-
-    componentDidMount() {
-        console.log('componentDidMount');
+        this.subs.forEach(sub => sub.remove());
     }
 
     async getUser() {

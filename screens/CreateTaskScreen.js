@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+    Alert,
     AsyncStorage,
     DatePickerIOS,
     Dimensions,
@@ -46,9 +47,6 @@ export default class CreateTaskScreen extends Component {
         const user = await HttpClientService.getUserMe();
         const defaultGroupId = await AsyncStorage.getItem('defaultGroupId');
         const {taskName, taskDescription, expirationDate} = this.state;
-        console.log('create task state: ', this.state);
-        console.log('defaultGroupId: ', defaultGroupId);
-        console.log('user: ', user);
 
         if (defaultGroupId) {
             TaskService.createTask({
@@ -59,7 +57,13 @@ export default class CreateTaskScreen extends Component {
                 "label_id": null,
                 "assign_to": user.data.id
             }).then((response) => {
-                console.log(response, 'response');
+                this.setState({tasksLoading: false});
+
+                this.props.navigation.goBack();
+            }).catch((error) => {
+                this.setState({tasksLoading: false});
+                console.log('error', error);
+                Alert.alert(`Error: ${error.code || ''} 🔥`, error.message || error);
             });
         }
     }
